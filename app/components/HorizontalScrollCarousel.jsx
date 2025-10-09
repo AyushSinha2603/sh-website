@@ -3,7 +3,7 @@ import { useRef } from "react";
 
 const Example = () => {
   return (
-    <div className="bg-neutral-800">
+    <div className="bg-neutral-900">
       <div className="flex h-48 items-center justify-center">
         <span className="font-semibold uppercase text-neutral-500">
           

@@ -38,7 +38,7 @@ const Navbar = () => {
         
         {/* LOGO */}
         <motion.a href="/" variants={linkVariants} className="text-xl font-bold text-white">
-          GameDev Co.
+          SleepyHeads
         </motion.a>
 
         {/* NAV LINKS */}
