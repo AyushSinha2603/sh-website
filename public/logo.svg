@@ -1,0 +1,5 @@
+<svg width="200" height="50" viewBox="0 0 200 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="50" fill="none"/>
+  <path d="M25 5 L5 25 L25 45 L45 25 Z" stroke="white" stroke-width="2"/>
+  <text x="60" y="32" font-family="Arial, sans-serif" font-size="20" fill="white" font-weight="bold">GameDev</text>
+</svg>

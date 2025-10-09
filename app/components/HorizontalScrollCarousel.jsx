@@ -1,22 +1,10 @@
 import { motion, useTransform, useScroll } from "framer-motion";
 import { useRef } from "react";
 
+// AFTER
 const Example = () => {
-  return (
-    <div className="bg-neutral-900">
-      <div className="flex h-48 items-center justify-center">
-        <span className="font-semibold uppercase text-neutral-500">
-          
-        </span>
-      </div>
-      <HorizontalScrollCarousel />
-      <div className="flex h-48 items-center justify-center">
-        <span className="font-semibold uppercase text-neutral-500">
-         
-        </span>
-      </div>
-    </div>
-  );
+  // We now directly return the carousel component without the wrapper or spacers.
+  return <HorizontalScrollCarousel />;
 };
 
 const HorizontalScrollCarousel = () => {
@@ -25,7 +13,7 @@ const HorizontalScrollCarousel = () => {
     target: targetRef,
   });
 
-  const x = useTransform(scrollYProgress, [0, 1], ["1%", "-95%"]);
+  const x = useTransform(scrollYProgress, [0, 1], ["1%", "-42%"]);
 
   return (
     <section ref={targetRef} className="relative h-[300vh] bg-neutral-900">
