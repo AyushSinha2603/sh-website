@@ -1,20 +1,30 @@
 "use client";
 
-import HorizontalScrollCarousel from "./components/HorizontalScrollCarousel.jsx";
-import HeroSection from "./components/HeroSection.jsx"; // 1. Import the new component
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import HorizontalScrollCarousel from "./components/HorizontalScrollCarousel.jsx"; // 1. Add this import back
+import HeroSection from "./components/HeroSection.jsx";
+import AboutSection from "./components/AboutSection.jsx";
 
 export default function Home() {
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start start", "end end"],
+  });
+
+  const heroProgress = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
+  const contentOpacity = useTransform(heroProgress, [0.95, 1], [0, 1]);
+
   return (
-    <main>
-      {/* The Navbar from layout.js will sit on top of this */}
+    <main ref={targetRef}>
+      <HeroSection scrollYProgress={heroProgress} />
       
-      {/* 2. Add the new Hero Section */}
-      <HeroSection />
-
-      {/* 3. The Carousel follows */}
-      <HorizontalScrollCarousel />
-
-      {/* You can add a footer or other sections here later */}
+      {/* This motion.div now wraps BOTH the About section and the Carousel */}
+      <motion.div style={{ opacity: contentOpacity }}>
+        <AboutSection />
+        <HorizontalScrollCarousel /> {/* 2. Place the carousel here */}
+      </motion.div>
     </main>
   );
 }

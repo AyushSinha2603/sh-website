@@ -1,13 +1,9 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useTransform } from "framer-motion";
 import Image from "next/image";
 
-// --- 1. DEFINE ALL 11 IMAGES AND THEIR PROPERTIES IN AN ARRAY ---
-// --- 1. DEFINE ALL 11 IMAGES AND THEIR PROPERTIES IN AN ARRAY ---
-// --- NEW, DENSER DATA ARRAY FOR A FULLER LOOK ---
-// --- FINAL, CENTERED DATA ARRAY ---
+// (The imagesData array and AnimatedImage component remain the same as the last version)
 const imagesData = [
   { id: 1, className: "absolute top-[10%] left-[20%] h-48 w-32", start: 0.15, end: 0.25 },
   { id: 2, className: "absolute top-[15%] right-[18%] h-64 w-48", start: 0.20, end: 0.30 },
@@ -25,64 +21,40 @@ const imagesData = [
   { id: 14, className: "absolute bottom-[5%] left-[55%] h-56 w-40", start: 0.80, end: 0.90 },
 ];
 
-// --- 2. CREATE A REUSABLE COMPONENT FOR EACH ANIMATED IMAGE ---
 const AnimatedImage = ({ data, scrollYProgress }) => {
   const { start, end, className } = data;
-
   const opacity = useTransform(scrollYProgress, [start, end], [0, 1]);
   const y = useTransform(scrollYProgress, [start, end], ["15vh", "0vh"]);
-
-  return (
-    <motion.div style={{ opacity, y }} className={`${className} rounded-lg bg-zinc-700`} />
-  );
+  return <motion.div style={{ opacity, y }} className={`${className} rounded-lg bg-zinc-700`} />;
 };
 
-
-const HeroSection = () => {
-  const targetRef = useRef(null);
-  
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end start"],
-  });
-
+// The main HeroSection component is now much simpler
+const HeroSection = ({ scrollYProgress }) => { // It receives scrollYProgress as a prop
   const logoOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
   const logoScale = useTransform(scrollYProgress, [0, 0.1], [1, 0.8]);
-  
-  const containerOpacity = useTransform(scrollYProgress, [0.9, 1], [1, 0]);
+  const containerOpacity = useTransform(scrollYProgress, [0.95, 1], [1, 0]);
 
   return (
-    <section ref={targetRef} className="relative h-[250vh] bg-neutral-900">
+    <div className="relative h-[250vh] bg-neutral-900">
       <div className="sticky top-0 h-screen overflow-hidden">
         <motion.div style={{ opacity: containerOpacity }} className="relative h-full">
-
-          {/* LOGO */}
           <motion.div
             style={{ opacity: logoOpacity, scale: logoScale }}
             className="absolute inset-0 grid place-content-center"
           >
             <div className="flex flex-col items-center">
-              <Image
-                src="/logo.svg"
-                alt="GameDev Co. Logo"
-                width={400}
-                height={100}
-                className="mb-4"
-              />
+              <Image src="/logo.svg" alt="GameDev Co. Logo" width={400} height={100} className="mb-4" />
               <p className="text-neutral-400">Scroll to explore</p>
             </div>
           </motion.div>
-
-          {/* --- 3. LOOP OVER THE DATA TO RENDER ALL IMAGES --- */}
           <div className="absolute inset-0">
             {imagesData.map((img) => (
               <AnimatedImage key={img.id} data={img} scrollYProgress={scrollYProgress} />
             ))}
           </div>
-
         </motion.div>
       </div>
-    </section>
+    </div>
   );
 };
 
