@@ -1,9 +1,7 @@
 import { motion, useTransform, useScroll } from "framer-motion";
 import { useRef } from "react";
 
-// AFTER
 const Example = () => {
-  // We now directly return the carousel component without the wrapper or spacers.
   return <HorizontalScrollCarousel />;
 };
 
@@ -18,7 +16,7 @@ const HorizontalScrollCarousel = () => {
   return (
     <section ref={targetRef} className="relative h-[300vh] bg-neutral-900">
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <motion.div style={{ x }} className="flex gap-4">
+        <motion.div style={{ x }} className="flex gap-4 p-4"> {/* Added padding for mobile */}
           {cards.map((card) => {
             return <Card card={card} key={card.id} />;
           })}
@@ -32,7 +30,8 @@ const Card = ({ card }) => {
   return (
     <div
       key={card.id}
-      className="group relative h-[450px] w-[450px] overflow-hidden bg-neutral-200"
+      // RESPONSIVE CHANGE: Made the card smaller on mobile, larger on medium screens+
+      className="group relative h-[400px] w-[300px] md:h-[450px] md:w-[450px] overflow-hidden bg-neutral-200"
     >
       <div
         style={{
@@ -43,7 +42,8 @@ const Card = ({ card }) => {
         className="absolute inset-0 z-0 transition-transform duration-300 group-hover:scale-110"
       ></div>
       <div className="absolute inset-0 z-10 grid place-content-center">
-        <p className="bg-gradient-to-br from-white/20 to-white/0 p-8 text-6xl font-black uppercase text-white backdrop-blur-lg">
+        {/* RESPONSIVE CHANGE: Made the text smaller on mobile */}
+        <p className="bg-gradient-to-br from-white/20 to-white/0 p-8 text-4xl md:text-6xl font-black uppercase text-white backdrop-blur-lg">
           {card.title}
         </p>
       </div>
@@ -54,39 +54,12 @@ const Card = ({ card }) => {
 export default Example;
 
 const cards = [
-  {
-    url: "/imgs/abstract/1.jpg",
-    title: "Title 1",
-    id: 1,
-  },
-  {
-    url: "/imgs/abstract/2.jpg",
-    title: "Title 2",
-    id: 2,
-  },
-  {
-    url: "/imgs/abstract/3.jpg",
-    title: "Title 3",
-    id: 3,
-  },
-  {
-    url: "/imgs/abstract/4.jpg",
-    title: "Title 4",
-    id: 4,
-  },
-  {
-    url: "/imgs/abstract/5.jpg",
-    title: "Title 5",
-    id: 5,
-  },
-  {
-    url: "/imgs/abstract/6.jpg",
-    title: "Title 6",
-    id: 6,
-  },
-  {
-    url: "/imgs/abstract/7.jpg",
-    title: "Title 7",
-    id: 7,
-  },
+    // Using placeholder images for demonstration
+  { url: "https://placehold.co/600x400/000000/FFFFFF/png?text=Game+One", title: "Game One", id: 1 },
+  { url: "https://placehold.co/600x400/111111/FFFFFF/png?text=Game+Two", title: "Game Two", id: 2 },
+  { url: "https://placehold.co/600x400/222222/FFFFFF/png?text=Game+Three", title: "Game Three", id: 3 },
+  { url: "https://placehold.co/600x400/333333/FFFFFF/png?text=Game+Four", title: "Game Four", id: 4 },
+  { url: "https://placehold.co/600x400/444444/FFFFFF/png?text=Game+Five", title: "Game Five", id: 5 },
+  { url: "https://placehold.co/600x400/555555/FFFFFF/png?text=Game+Six", title: "Game Six", id: 6 },
+  { url: "https://placehold.co/600x400/666666/FFFFFF/png?text=Game+Seven", title: "Game Seven", id: 7 },
 ];
