@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 
 const AboutSection = () => {
-  const headline = "Forging New Worlds";
+  const headline = "SleepyHead Studios";
   const bodyText = "Founded in 2020, our studio is a collective of passionate artists, designers, and engineers dedicated to crafting unforgettable interactive experiences. We believe in the power of play and strive to build games that challenge the mind and touch the heart.";
 
   // Animation variants for the container to orchestrate the children's animations
