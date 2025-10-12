@@ -1,69 +1,85 @@
+// app/components/HeroSection.jsx
+
 "use client";
 
-import { motion, useTransform, useScroll } from "framer-motion";
+import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import Image from "next/image";
 
-// --- FINAL RESPONSIVE DATA ARRAY ---
-const imagesData = [
-    // --- GROUP 1: 7 Images visible on MOBILE, which reposition on DESKTOP ---
-    { id: 1,  className: "absolute top-[15%] left-[10%] h-48 w-36 lg:top-[12%] lg:left-[15%]", start: 0.15, end: 0.30 },
-    { id: 2,  className: "absolute top-[30%] right-[8%] h-64 w-40 lg:top-[20%] lg:right-[10%]", start: 0.20, end: 0.35 },
-    { id: 3,  className: "absolute bottom-[20%] left-[12%] h-40 w-56 lg:bottom-[25%] lg:left-[15%]", start: 0.25, end: 0.40 },
-    { id: 4,  className: "absolute bottom-[10%] right-[15%] h-56 w-36 lg:bottom-[15%] lg:right-[12%]", start: 0.30, end: 0.45 },
-    { id: 5,  className: "absolute top-[50%] left-1/2 -translate-x-1/2 h-40 w-32", start: 0.40, end: 0.55 },
-    { id: 6,  className: "absolute top-[5%] right-[30%] h-40 w-32", start: 0.50, end: 0.65 },
-    { id: 7,  className: "absolute bottom-[5%] left-[35%] h-32 w-48", start: 0.55, end: 0.70 },
+const SECTION_HEIGHT = 1500;
 
-    // --- GROUP 2: 5 Additional images for DESKTOP ONLY ---
-    { id: 8,  className: "hidden lg:block absolute top-[40%] left-[25%] h-56 w-40", start: 0.50, end: 0.60 },
-    { id: 9,  className: "hidden lg:block absolute bottom-[25%] right-[40%] h-32 w-48", start: 0.55, end: 0.65 },
-    { id: 10, className: "hidden lg:block absolute top-[10%] right-[50%] h-40 w-28", start: 0.60, end: 0.70 },
-    { id: 11, className: "hidden lg:block absolute bottom-[45%] left-[40%] h-48 w-32", start: 0.65, end: 0.75 },
-    { id: 12, className: "hidden lg:block absolute top-[65%] right-[25%] h-40 w-28", start: 0.70, end: 0.80 },
-];
-
-const AnimatedImage = ({ data, scrollYProgress }) => {
-  const { start, end, className } = data;
-  const opacity = useTransform(scrollYProgress, [start, end], [0, 1]);
-  const y = useTransform(scrollYProgress, [start, end], ["15vh", "0vh"]);
-  const scale = useTransform(scrollYProgress, [start, end], [0.9, 1]);
-  return <motion.div style={{ opacity, y, scale }} className={`${className} rounded-lg bg-zinc-700`} />;
-};
-
-const HeroSection = () => {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end start"],
-  });
-  
-  const logoOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
-  const logoScale = useTransform(scrollYProgress, [0, 0.1], [1, 0.8]);
-  const containerOpacity = useTransform(scrollYProgress, [0.9, 1], [1, 0]);
+// Internal component for the main background image
+const CenterImage = () => {
+  const { scrollY } = useScroll();
+  const clip1 = useTransform(scrollY, [0, 1500], [25, 0]);
+  const clip2 = useTransform(scrollY, [0, 1500], [75, 100]);
+  const clipPath = useMotionTemplate`polygon(${clip1}% ${clip1}%, ${clip2}% ${clip1}%, ${clip2}% ${clip2}%, ${clip1}% ${clip2}%)`;
+  const backgroundSize = useTransform(scrollY, [0, SECTION_HEIGHT + 500], ["170%", "100%"]);
+  const opacity = useTransform(scrollY, [SECTION_HEIGHT, SECTION_HEIGHT + 500], [1, 0]);
 
   return (
-    // We'll stick with the faster 200vh height
-    <section ref={targetRef} className="relative h-[200vh] bg-neutral-900">
-      <div className="sticky top-0 h-screen overflow-hidden">
-        <motion.div style={{ opacity: containerOpacity }} className="relative h-full">
-          <motion.div
-            style={{ opacity: logoOpacity, scale: logoScale }}
-            className="absolute inset-0 grid place-content-center"
-          >
-            <div className="flex flex-col items-center">
-              <Image src="/logo.svg" alt="GameDev Co. Logo" width={400} height={100} className="w-[250px] md:w-[400px] h-auto mb-4" />
-              <p className="text-neutral-400">Scroll to explore</p>
-            </div>
-          </motion.div>
-          <div className="absolute inset-0">
-            {imagesData.map((img) => (
-              <AnimatedImage key={img.id} data={img} scrollYProgress={scrollYProgress} />
-            ))}
-          </div>
-        </motion.div>
+    <motion.div
+      className="sticky top-0 h-screen w-full"
+      style={{
+        clipPath,
+        backgroundSize,
+        opacity,
+        backgroundImage: "url(https://images.unsplash.com/photo-1460186136353-977e9d6085a1?q=80&w=2670&auto=format&fit=crop)",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    />
+  );
+};
+
+// Internal component for the smaller parallax images
+const ParallaxImg = ({ className, alt, src, start, end }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: [`${start}px end`, `end ${end * -1}px`],
+  });
+  const opacity = useTransform(scrollYProgress, [0.75, 1], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0.75, 1], [1, 0.85]);
+  const y = useTransform(scrollYProgress, [0, 1], [start, end]);
+  const transform = useMotionTemplate`translateY(${y}px) scale(${scale})`;
+
+  return (
+    <motion.img
+      src={src}
+      alt={alt}
+      className={className}
+      ref={ref}
+      style={{ transform, opacity }}
+    />
+  );
+};
+
+// Internal component to hold the parallax images
+const ParallaxImages = () => {
+  return (
+    <div className="mx-auto max-w-5xl px-4 pt-[200px]">
+      <ParallaxImg src="https://images.unsplash.com/photo-1484600899469-230e8d1d59c0?q=80&w=2670" alt="Space launch" start={-200} end={200} className="w-1/3" />
+      <ParallaxImg src="https://images.unsplash.com/photo-1446776709462-d6b525c57bd3?q=80&w=2670" alt="Space launch" start={200} end={-250} className="mx-auto w-2/3" />
+      <ParallaxImg src="https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?q=80&w=2370" alt="Orbiting satellite" start={-200} end={200} className="ml-auto w-1/3" />
+      <ParallaxImg src="https://images.unsplash.com/photo-1494022299300-899b96e49893?q=80&w=2670" alt="Orbiting satellite" start={0} end={-500} className="ml-24 w-5/12" />
+    </div>
+  );
+};
+
+// This is the main component we will export.
+// NOTE: It does NOT accept a `scrollYProgress` prop.
+const HeroSection = () => {
+  return (
+    <div className="bg-zinc-950">
+      <div
+        style={{ height: `calc(${SECTION_HEIGHT}px + 100vh)` }}
+        className="relative w-full"
+      >
+        <CenterImage />
+        <ParallaxImages />
+        <div className="absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-b from-zinc-950/0 to-zinc-950" />
       </div>
-    </section>
+    </div>
   );
 };
 

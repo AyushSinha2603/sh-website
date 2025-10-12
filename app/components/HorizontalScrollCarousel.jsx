@@ -1,5 +1,8 @@
+"use client";
+
 import { motion, useTransform, useScroll } from "framer-motion";
 import { useRef } from "react";
+import Link from "next/link";
 
 const Example = () => {
   return <HorizontalScrollCarousel />;
@@ -16,7 +19,7 @@ const HorizontalScrollCarousel = () => {
   return (
     <section ref={targetRef} className="relative h-[300vh] bg-neutral-900">
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-        <motion.div style={{ x }} className="flex gap-4 p-4"> {/* Added padding for mobile */}
+        <motion.div style={{ x }} className="flex gap-4 p-4">
           {cards.map((card) => {
             return <Card card={card} key={card.id} />;
           })}
@@ -28,33 +31,51 @@ const HorizontalScrollCarousel = () => {
 
 const Card = ({ card }) => {
   return (
-    <div
-      key={card.id}
-      // RESPONSIVE CHANGE: Made the card smaller on mobile, larger on medium screens+
-      className="group relative h-[400px] w-[300px] md:h-[450px] md:w-[450px] overflow-hidden bg-neutral-200"
-    >
+    <Link href={`/games/${card.id}`} key={card.id}>
       <div
         style={{
-          backgroundImage: `url(${card.url})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          transformPerspective: "800px",
+          transformStyle: "preserve-3d",
         }}
-        className="absolute inset-0 z-0 transition-transform duration-300 group-hover:scale-110"
-      ></div>
-      <div className="absolute inset-0 z-10 grid place-content-center">
-        {/* RESPONSIVE CHANGE: Made the text smaller on mobile */}
-        <p className="bg-gradient-to-br from-white/20 to-white/0 p-8 text-4xl md:text-6xl font-black uppercase text-white backdrop-blur-lg">
-          {card.title}
-        </p>
+        className="group relative h-[400px] w-[300px] md:h-[450px] md:w-[450px] overflow-hidden bg-neutral-200 rounded-lg"
+      >
+        <motion.div
+          whileHover={{
+            scale: 1.05,
+            rotateX: 10,
+            rotateY: -5,
+            boxShadow: "0px 20px 30px rgba(0, 0, 0, 0.3)",
+          }}
+          transition={{
+            type: "spring",
+            stiffness: 350,
+            damping: 20,
+          }}
+          className="relative w-full h-full"
+        >
+          <div
+            style={{
+              backgroundImage: `url(${card.url})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+            className="absolute inset-0 z-0 transition-transform duration-300 group-hover:scale-110"
+          ></div>
+          {/* --- TEXT REMOVED HERE --- */}
+          {/* <div className="absolute inset-0 z-10 grid place-content-center">
+            <p className="bg-gradient-to-br from-white/20 to-white/0 p-8 text-4xl md:text-6xl font-black uppercase text-white backdrop-blur-lg">
+              {card.title}
+            </p>
+          </div> */}
+        </motion.div>
       </div>
-    </div>
+    </Link>
   );
 };
 
 export default Example;
 
 const cards = [
-    // Using placeholder images for demonstration
   { url: "https://placehold.co/600x400/000000/FFFFFF/png?text=Game+One", title: "Game One", id: 1 },
   { url: "https://placehold.co/600x400/111111/FFFFFF/png?text=Game+Two", title: "Game Two", id: 2 },
   { url: "https://placehold.co/600x400/222222/FFFFFF/png?text=Game+Three", title: "Game Three", id: 3 },
