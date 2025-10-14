@@ -76,10 +76,11 @@ const Card = ({ card }) => {
 export default Example;
 
 const cards = [
-  { url: "https://placehold.co/600x400/000000/FFFFFF/png?text=Game+One", title: "Game One", id: 1 },
-  { url: "https://placehold.co/600x400/111111/FFFFFF/png?text=Game+Two", title: "Game Two", id: 2 },
-  { url: "https://placehold.co/600x400/222222/FFFFFF/png?text=Game+Three", title: "Game Three", id: 3 },
-  { url: "https://placehold.co/600x400/333333/FFFFFF/png?text=Game+Four", title: "Game Four", id: 4 },
+  // AFTER
+  { url: "/images/red_orbit.webp", title: "Game One", id: 1 },
+  { url: "/images/ontime.webp", title: "Game Two", id: 2 },
+  { url: "/images/aurat.webp", title: "Game Three", id: 3 },
+  { url: "/images/depthlost.webp", title: "Game Four", id: 4 },
   { url: "https://placehold.co/600x400/444444/FFFFFF/png?text=Game+Five", title: "Game Five", id: 5 },
   { url: "https://placehold.co/600x400/555555/FFFFFF/png?text=Game+Six", title: "Game Six", id: 6 },
   { url: "https://placehold.co/600x400/666666/FFFFFF/png?text=Game+Seven", title: "Game Seven", id: 7 },
