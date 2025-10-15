@@ -2,7 +2,8 @@
 
 import { motion, useTransform, useScroll } from "framer-motion";
 import { useRef } from "react";
-import Link from "next/link";
+// REMOVED: We no longer need the Next.js Link component for this
+// import Link from "next/link";
 
 const Example = () => {
   return <HorizontalScrollCarousel />;
@@ -31,7 +32,13 @@ const HorizontalScrollCarousel = () => {
 
 const Card = ({ card }) => {
   return (
-    <Link href={`/games/${card.id}`} key={card.id}>
+    // CHANGED: Replaced <Link> with a standard <a> tag
+    <a
+      href={card.externalUrl} // It now points to the external URL
+      target="_blank" // This makes the link open in a new tab
+      rel="noopener noreferrer" // Important for security with new tabs
+      key={card.id}
+    >
       <div
         style={{
           transformPerspective: "800px",
@@ -61,27 +68,21 @@ const Card = ({ card }) => {
             }}
             className="absolute inset-0 z-0 transition-transform duration-300 group-hover:scale-110"
           ></div>
-          {/* --- TEXT REMOVED HERE --- */}
-          {/* <div className="absolute inset-0 z-10 grid place-content-center">
-            <p className="bg-gradient-to-br from-white/20 to-white/0 p-8 text-4xl md:text-6xl font-black uppercase text-white backdrop-blur-lg">
-              {card.title}
-            </p>
-          </div> */}
         </motion.div>
       </div>
-    </Link>
+    </a>
   );
 };
 
 export default Example;
 
+// CHANGED: Added the `externalUrl` property to each card object
 const cards = [
-  // AFTER
-  { url: "/images/red_orbit.webp", title: "Game One", id: 1 },
-  { url: "/images/ontime.webp", title: "Game Two", id: 2 },
-  { url: "/images/aurat.webp", title: "Game Three", id: 3 },
-  { url: "/images/depthlost.webp", title: "Game Four", id: 4 },
-  { url: "https://placehold.co/600x400/444444/FFFFFF/png?text=Game+Five", title: "Game Five", id: 5 },
-  { url: "https://placehold.co/600x400/555555/FFFFFF/png?text=Game+Six", title: "Game Six", id: 6 },
-  { url: "https://placehold.co/600x400/666666/FFFFFF/png?text=Game+Seven", title: "Game Seven", id: 7 },
+  { url: "/images/game-one.webp", title: "Game One", id: 1, externalUrl: "#" }, // Replace "#" with your link
+  { url: "https://placehold.co/600x400/111111/FFFFFF/png?text=Game+Two", title: "Game Two", id: 2, externalUrl: "#" },
+  { url: "https://placehold.co/600x400/222222/FFFFFF/png?text=Game+Three", title: "Game Three", id: 3, externalUrl: "#" },
+  { url: "/images/depthlost.webp", title: "Game Four", id: 4, externalUrl: "https://sleepyheadstudios.itch.io/depth-lost-into-the-abyss" },
+  { url: "https://placehold.co/600x400/444444/FFFFFF/png?text=Game+Five", title: "Game Five", id: 5, externalUrl: "#" },
+  { url: "https://placehold.co/600x400/555555/FFFFFF/png?text=Game+Six", title: "Game Six", id: 6, externalUrl: "#" },
+  { url: "https://placehold.co/600x400/666666/FFFFFF/png?text=Game+Seven", title: "Game Seven", id: 7, externalUrl: "#" },
 ];
