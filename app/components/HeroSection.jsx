@@ -1,85 +1,175 @@
-// app/components/HeroSection.jsx
-
 "use client";
 
-import { motion, useMotionTemplate, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { motion } from "framer-motion";
 
-const SECTION_HEIGHT = 1500;
-
-// Internal component for the main background image
-const CenterImage = () => {
-  const { scrollY } = useScroll();
-  const clip1 = useTransform(scrollY, [0, 1500], [25, 0]);
-  const clip2 = useTransform(scrollY, [0, 1500], [75, 100]);
-  const clipPath = useMotionTemplate`polygon(${clip1}% ${clip1}%, ${clip2}% ${clip1}%, ${clip2}% ${clip2}%, ${clip1}% ${clip2}%)`;
-  const backgroundSize = useTransform(scrollY, [0, SECTION_HEIGHT + 500], ["170%", "100%"]);
-  const opacity = useTransform(scrollY, [SECTION_HEIGHT, SECTION_HEIGHT + 500], [1, 0]);
-
-  return (
-    <motion.div
-      className="sticky top-0 h-screen w-full"
-      style={{
-        clipPath,
-        backgroundSize,
-        opacity,
-        backgroundImage: "url(https://images.unsplash.com/photo-1460186136353-977e9d6085a1?q=80&w=2670&auto=format&fit=crop)",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    />
-  );
-};
-
-// Internal component for the smaller parallax images
-const ParallaxImg = ({ className, alt, src, start, end }) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: [`${start}px end`, `end ${end * -1}px`],
-  });
-  const opacity = useTransform(scrollYProgress, [0.75, 1], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0.75, 1], [1, 0.85]);
-  const y = useTransform(scrollYProgress, [0, 1], [start, end]);
-  const transform = useMotionTemplate`translateY(${y}px) scale(${scale})`;
-
-  return (
-    <motion.img
-      src={src}
-      alt={alt}
-      className={className}
-      ref={ref}
-      style={{ transform, opacity }}
-    />
-  );
-};
-
-// Internal component to hold the parallax images
-const ParallaxImages = () => {
-  return (
-    <div className="mx-auto max-w-5xl px-4 pt-[200px]">
-      <ParallaxImg src="https://images.unsplash.com/photo-1484600899469-230e8d1d59c0?q=80&w=2670" alt="Space launch" start={-200} end={200} className="w-1/3" />
-      <ParallaxImg src="https://images.unsplash.com/photo-1446776709462-d6b525c57bd3?q=80&w=2670" alt="Space launch" start={200} end={-250} className="mx-auto w-2/3" />
-      <ParallaxImg src="https://images.unsplash.com/photo-1541185933-ef5d8ed016c2?q=80&w=2370" alt="Orbiting satellite" start={-200} end={200} className="ml-auto w-1/3" />
-      <ParallaxImg src="https://images.unsplash.com/photo-1494022299300-899b96e49893?q=80&w=2670" alt="Orbiting satellite" start={0} end={-500} className="ml-24 w-5/12" />
-    </div>
-  );
-};
-
-// This is the main component we will export.
-// NOTE: It does NOT accept a `scrollYProgress` prop.
 const HeroSection = () => {
+  // We use a ref to get direct access to the <canvas> element
+  const canvasRef = useRef(null);
+
+  // The key: Porting the vanilla JS into a useEffect hook.
+  // This hook runs only on the client-side, after the component has mounted.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return; // Exit if the canvas isn't ready
+
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let animationFrameId;
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    class Particle {
+      constructor(x, y, size, color, speed) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.color = color;
+        this.speed = speed;
+        this.angle = Math.random() * 2 * Math.PI;
+        this.vx = this.speed * Math.cos(this.angle);
+        this.vy = this.speed * Math.sin(this.angle);
+      }
+      update(mouse) {
+        if (mouse.x && mouse.y) {
+          const dx = this.x - mouse.x;
+          const dy = this.y - mouse.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < mouse.radius) {
+            const force = (mouse.radius - distance) / mouse.radius;
+            this.x += (dx / distance) * force * 2;
+            this.y += (dy / distance) * force * 2;
+          }
+        }
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x - this.size < 0 || this.x + this.size > canvas.width) this.vx *= -1;
+        if (this.y - this.size < 0 || this.y + this.size > canvas.height) this.vy *= -1;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    const mouse = { x: null, y: null, radius: 150 };
+
+    const handleMouseMove = (event) => {
+      mouse.x = event.clientX;
+      mouse.y = event.clientY;
+    };
+    const handleMouseOut = () => {
+      mouse.x = null;
+      mouse.y = null;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseout', handleMouseOut);
+
+    const createParticles = () => {
+      particles = [];
+      const particleCount = window.innerWidth < 768 ? 50 : 100;
+      const colors = ['#60A5FA', '#6366F1', '#F43F5E', '#E5E7EB'];
+      for (let i = 0; i < particleCount; i++) {
+        const size = Math.random() * 1.5 + 0.5;
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const speed = Math.random() * 0.3 + 0.1;
+        particles.push(new Particle(x, y, size, color, speed));
+      }
+    };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update(mouse);
+        p.draw();
+      });
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    const initParticles = () => {
+      resizeCanvas();
+      createParticles();
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      animate();
+    };
+
+    initParticles();
+    window.addEventListener('resize', initParticles);
+
+    // This is the cleanup function. It runs when the component is unmounted.
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', initParticles);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseout', handleMouseOut);
+    };
+  }, []); // The empty array ensures this effect runs only once.
+
   return (
-    <div className="bg-zinc-950">
-      <div
-        style={{ height: `calc(${SECTION_HEIGHT}px + 100vh)` }}
-        className="relative w-full"
-      >
-        <CenterImage />
-        <ParallaxImages />
-        <div className="absolute bottom-0 left-0 right-0 h-96 bg-gradient-to-b from-zinc-950/0 to-zinc-950" />
+    <section id="home" className="relative h-screen flex items-center justify-center text-center overflow-hidden bg-[#0F0F0F]">
+      {/* The canvas element that our JS will draw on */}
+      <canvas ref={canvasRef} id="particle-canvas" className="absolute inset-0 z-0 w-full h-full" />
+      
+      <div className="relative z-10 p-6">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="text-5xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-tight"
+        >
+          From Dreams to<br />
+          <span
+            className="bg-gradient-to-r from-blue-400 to-indigo-700"
+            style={{ WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}
+          >
+            Digital Worlds
+          </span>
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          className="mt-4 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto"
+        >
+          An independent studio dedicated to building unforgettable gaming experiences.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+          className="mt-8"
+        >
+          <a
+            href="#games"
+            className="bg-rose-500 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-opacity-90 transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#0F0F0F] focus:ring-rose-500"
+          >
+            Explore Our Games
+          </a>
+        </motion.div>
       </div>
-    </div>
+
+      <motion.div
+        animate={{ y: [0, -10, 0] }}
+        transition={{ duration: 2, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+      >
+        <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </motion.div>
+      
+      <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-neutral-900 via-neutral-900/50 to-transparent z-10" />
+    </section>
   );
 };
 
