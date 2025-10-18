@@ -4,7 +4,6 @@ import { motion, useTransform, useScroll } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
 const cards = [
-    // ... (Your card data remains the same)
     { url: "/images/game-one.webp", title: "Game One", id: 1, externalUrl: "#" },
     { url: "https://placehold.co/600x400/111111/FFFFFF/png?text=Game+Two", title: "Game Two", id: 2, externalUrl: "#" },
     { url: "https://placehold.co/600x400/222222/FFFFFF/png?text=Game+Three", title: "Game Three", id: 3, externalUrl: "#" },
@@ -15,7 +14,6 @@ const cards = [
 ];
 
 const Card = ({ card }) => {
-  // ... (Card component remains the same)
   return (
     <a href={card.externalUrl} target="_blank" rel="noopener noreferrer" key={card.id} className="shrink-0">
       <div style={{ transformPerspective: "800px", transformStyle: "preserve-3d" }} className="group relative h-[400px] w-[300px] md:h-[450px] md:w-[450px] overflow-hidden bg-neutral-200 rounded-lg">
@@ -41,14 +39,11 @@ const HorizontalScrollCarousel = () => {
         if (containerRef.current) {
           setScrollWidth(containerRef.current.scrollWidth);
         }
-        // Use window.innerWidth for a more reliable viewport width
         setWindowWidth(window.innerWidth);
       }, 100);
     };
-
     const initialTimeout = setTimeout(calculateWidths, 100);
     window.addEventListener('resize', calculateWidths);
-
     return () => {
       clearTimeout(initialTimeout);
       clearTimeout(resizeTimeout);
@@ -57,19 +52,15 @@ const HorizontalScrollCarousel = () => {
   }, []);
 
   const { scrollYProgress } = useScroll({ target: targetRef });
-
   const buffer = 32;
   const xOffset = Math.max(0, scrollWidth - windowWidth + buffer);
-
-  // Determine if we are on a "desktop" size (Tailwind's 'md' breakpoint is 768px)
-  const isDesktop = windowWidth >= 768;
-
-  // Apply the transform ONLY if isDesktop is true
+  const isDesktop = typeof window !== 'undefined' && windowWidth >= 768;
   const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${xOffset}px`]);
-  const xStyle = isDesktop ? x : "0%"; // Use "0%" for x on mobile
+  const xStyle = isDesktop ? x : "0%";
 
   return (
-    <section ref={targetRef} className="relative h-auto md:h-[200vh] bg-transparent py-24 md:py-0">
+    // Standardized padding
+    <section ref={targetRef} className="relative h-auto md:h-[200vh] bg-transparent py-20 md:py-0">
       <div className="md:sticky top-0 flex h-auto md:h-screen items-center overflow-hidden">
         <div className="w-screen px-6 md:px-0">
             <motion.h2
@@ -81,11 +72,10 @@ const HorizontalScrollCarousel = () => {
             >
                 Featured Games
             </motion.h2>
-            {/* UPDATED: Apply the xStyle conditionally */}
             <motion.div
                 ref={containerRef}
-                style={{ x: xStyle }} // Use the conditional style here
-                className="flex gap-4 md:gap-8 px-4 md:px-8 py-4 md:py-0 overflow-x-auto md:overflow-x-visible no-scrollbar" // Removed md:no-scrollbar-md as it wasn't defined
+                style={{ x: xStyle }}
+                className="flex gap-4 md:gap-8 px-4 md:px-8 py-4 md:py-0 overflow-x-auto md:overflow-x-visible no-scrollbar"
             >
                 {cards.map((card) => (
                     <Card card={card} key={card.id} />
