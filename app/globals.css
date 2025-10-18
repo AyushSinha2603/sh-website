@@ -120,7 +120,24 @@
     @apply bg-background text-foreground;
   }
 }
-/* app/globals.css */
 
-/* ... your existing @tailwind lines ... */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
 
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Optional: Apply no-scrollbar only on desktop if needed */
+@media (min-width: 768px) {
+    .md\:no-scrollbar-md::-webkit-scrollbar {
+        display: none;
+    }
+    .md\:no-scrollbar-md {
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    }
+}

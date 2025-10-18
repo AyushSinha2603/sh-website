@@ -49,7 +49,7 @@ const HeroSection = () => {
       </div>
 
       {/* Scroll Down Indicator */}
-      <motion.div
+      {/* <motion.div
         animate={{ y: [0, -10, 0] }}
         transition={{ duration: 2, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
@@ -57,7 +57,7 @@ const HeroSection = () => {
         <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24" xmlns="http://www.w3.org/2000/svg">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
         </svg>
-      </motion.div>
+      </motion.div> */}
 
       {/* Bottom fade overlay */}
       <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#0F0F0F] via-[#0F0F0F]/50 to-transparent z-20" />
