@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 const newsData = [
+  // ... (Your news data remains the same)
   { id: 1, title: "Red Orbit Launches on Play Store!", date: "October 10, 2025", description: "We are thrilled to announce that our debut title, Red Orbit, is now officially available for download on the Google Play Store. Thank you to our entire community for the support!" },
   { id: 2, title: "Placed 3rd in BYOG 2025!", date: "September 15, 2025", description: "Our team participated in the annual Build Your Own Game (BYOG) jam and we're proud to have secured a top 3 finish with our puzzle-platformer prototype, 'Chrono Shift'." },
   { id: 3, title: "New Project 'Umbra' Announced", date: "August 01, 2025", description: "Development has officially begun on our next major title, a narrative-driven stealth game codenamed 'Project Umbra'. More details to come soon." },
@@ -15,50 +16,56 @@ const newsData = [
   { id: 9, title: "SleepyHeads Studio Founded", date: "January 01, 2024", description: "Our journey begins! A small team of passionate developers comes together with a shared dream of creating unforgettable games. The adventure starts now." },
 ];
 
-// This component is now fully responsive
 const NewsItem = ({ item, side }) => {
-  // The animation will still alternate, which is fine on mobile and correct on desktop
+  // Mobile-first animation (slide from right)
   const itemVariants = {
-    hidden: { opacity: 0, x: side === 'left' ? -100 : 100 },
+    hidden: { opacity: 0, x: 50 },
+    // Desktop animation alternates based on 'side'
     visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeInOut' } },
   };
 
+  // Specific variant for desktop left side
+  const desktopLeftVariant = {
+     hidden: { opacity: 0, x: -50 }, // Slide from left on desktop
+     visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: 'easeInOut' } },
+  }
+
   return (
-    // On mobile: full width, left padding. On desktop: half width, alternating alignment, no left padding.
+    // Mobile: Full width, left padding. Desktop: Half width, alternates alignment, no left padding.
     <motion.div
-      variants={itemVariants}
+      // Use correct variant based on screen size implicitly via Tailwind,
+      // but explicitly manage animation variants for desktop alternation
+      variants={side === 'left' ? desktopLeftVariant : itemVariants} // Note: This applies mainly to desktop due to layout classes
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.5 }}
-      className={`relative w-full pl-12 md:pl-0 md:w-1/2 mb-8 ${side === 'left' ? 'md:self-start' : 'md:self-end'}`}
+      viewport={{ once: true, amount: 0.4 }} // Adjusted amount for better trigger
+      // Correct responsive classes for layout
+      className={`relative w-full mb-8 md:w-1/2 ${side === 'left' ? 'md:self-start md:pr-8' : 'md:self-end md:pl-8'}`}
     >
-      {/* Mobile-only Dot (always on the left) */}
-      <div className="md:hidden absolute top-5 left-4 -translate-x-1/2 w-4 h-4 bg-indigo-500 rounded-full border-4 border-neutral-900" />
-      
-      {/* Desktop-only Dot (alternates left/right) */}
-      <div className={`hidden md:block absolute top-5 ${side === 'left' ? 'right-[-2.1rem]' : 'left-[-2.1rem]'} w-4 h-4 bg-indigo-500 rounded-full border-4 border-neutral-900`} />
-      
-      <div className="bg-neutral-800/50 rounded-lg p-6 border border-neutral-700">
-        <p className="text-sm text-indigo-400 mb-2">{item.date}</p>
-        <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-        <p className="text-neutral-300">{item.description}</p>
+      {/* Container for dot + content, handles mobile padding */}
+      <div className="relative pl-10 md:pl-0">
+        {/* The dot on the timeline */}
+        <div className={`absolute top-1 left-0 -translate-x-1/2 md:left-auto md:translate-x-0 ${side === 'left' ? 'md:right-[-0.5rem]' : 'md:left-[-0.5rem]'} w-4 h-4 bg-indigo-500 rounded-full border-4 border-[#0F0F0F]`} />
+        
+        {/* Content Box */}
+        <div className="bg-neutral-800/50 rounded-lg p-6 border border-neutral-700">
+          <p className="text-sm text-indigo-400 mb-2">{item.date}</p>
+          <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+          <p className="text-neutral-300 text-sm">{item.description}</p>
+        </div>
       </div>
     </motion.div>
   );
 };
 
-
 const NewsPage = () => {
   const timelineRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ["start center", "end end"],
-  });
-
+  const { scrollYProgress } = useScroll({ target: timelineRef, offset: ["start center", "end end"] });
   const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   return (
-    <div className="bg-neutral-900 min-h-screen pt-32 pb-24">
+    // Background is transparent
+    <div className="bg-transparent min-h-screen pt-32 pb-24">
       <div className="container mx-auto px-6">
         <div className="text-center mb-20">
           <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut" }} className="text-5xl md:text-7xl font-black text-white uppercase">
@@ -68,22 +75,19 @@ const NewsPage = () => {
             Follow our journey and recent milestones.
           </motion.p>
         </div>
-
-        {/* The main container is now responsive */}
-        <div ref={timelineRef} className="relative max-w-2xl mx-auto flex flex-col items-start md:items-center">
-          {/* The line is responsive: left on mobile, centered on desktop */}
+        {/* Main timeline container */}
+        <div ref={timelineRef} className="relative max-w-3xl mx-auto flex flex-col items-center">
+          {/* Vertical line - positioned correctly for both mobile and desktop */}
           <motion.div
-            className="absolute top-0 left-4 md:left-1/2 md:-translate-x-1/2 w-0.5 h-full bg-indigo-500 origin-top"
+            className="absolute top-0 left-0 md:left-1/2 md:-translate-x-1/2 w-0.5 h-full bg-indigo-500 origin-top"
             style={{ scaleY }}
           />
-          
-          {newsData.map((item, index) => (
-            <NewsItem
-              key={item.id}
-              item={item}
-              side={index % 2 === 0 ? 'left' : 'right'}
-            />
-          ))}
+          {/* Items container */}
+          <div className="w-full flex flex-col items-center">
+            {newsData.map((item, index) => (
+              <NewsItem key={item.id} item={item} side={index % 2 === 0 ? 'left' : 'right'}/>
+            ))}
+          </div>
         </div>
       </div>
     </div>

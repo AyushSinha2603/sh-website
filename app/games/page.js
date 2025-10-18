@@ -1,3 +1,4 @@
+// app/games/page.js
 "use client";
 
 import { motion } from "framer-motion";
@@ -42,13 +43,7 @@ const GameCard = ({ game, variants }) => {
 const UpcomingGamesSection = () => {
     return (
         <div className="py-24">
-             <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-center mb-16"
-            >
+             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8, delay: 0.2 }} className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-black text-white uppercase">In Development</h2>
                 <p className="text-lg text-neutral-400 mt-4">A sneak peek at what's coming next.</p>
             </motion.div>
@@ -68,12 +63,14 @@ const UpcomingGamesSection = () => {
     );
 };
 
+
 const GamesPage = () => {
   const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.5 } } };
   const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
   return (
-    <div className="bg-neutral-900 min-h-screen pt-32 pb-16">
+    // UPDATED: Background is now transparent
+    <div className="bg-transparent min-h-screen pt-32 pb-16">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut" }} className="text-5xl md:text-7xl font-black text-white uppercase">
@@ -83,12 +80,7 @@ const GamesPage = () => {
             Explore the games we've passionately crafted.
           </motion.p>
         </div>
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-        >
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {gamesData.map((game) => (
             <GameCard key={game.id} game={game} variants={itemVariants} />
           ))}
