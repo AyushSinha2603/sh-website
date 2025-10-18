@@ -4,9 +4,15 @@
 import { motion } from "framer-motion";
 
 const AboutSection = () => {
+  const headline = "SleepyHead Studios";
+  const bodyText = "Founded in 2020, our studio is a collective of passionate artists, designers, and engineers dedicated to crafting unforgettable interactive experiences. We believe in the power of play and strive to build games that challenge the mind and touch the heart.";
+
+  const containerVariants = { hidden: {}, visible: { transition: { staggerChildren: 0.12, delayChildren: 0.3, }, }, };
+  const wordVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }, };
+
   return (
-    // Background transparent
-    <section id="about" className="py-20 lg:py-32 bg-transparent">
+    // UPDATED: Reduced vertical padding on all screen sizes
+    <section id="about" className="bg-transparent py-12 md:py-16 lg:py-24">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -34,7 +34,6 @@ const HorizontalScrollCarousel = () => {
   const [windowWidth, setWindowWidth] = useState(0);
 
   useEffect(() => {
-    // Debounce resize handler for performance
     let resizeTimeout;
     const calculateWidths = () => {
       clearTimeout(resizeTimeout);
@@ -42,15 +41,14 @@ const HorizontalScrollCarousel = () => {
         if (containerRef.current) {
           setScrollWidth(containerRef.current.scrollWidth);
         }
-        setWindowWidth(document.documentElement.clientWidth);
-      }, 100); // Wait 100ms after resize stops
+        // Use window.innerWidth for a more reliable viewport width
+        setWindowWidth(window.innerWidth);
+      }, 100);
     };
 
-    // Need timeout to ensure layout is stable after mount
     const initialTimeout = setTimeout(calculateWidths, 100);
     window.addEventListener('resize', calculateWidths);
 
-    // Cleanup function
     return () => {
       clearTimeout(initialTimeout);
       clearTimeout(resizeTimeout);
@@ -60,16 +58,19 @@ const HorizontalScrollCarousel = () => {
 
   const { scrollYProgress } = useScroll({ target: targetRef });
 
-  // UPDATED: Added a buffer (e.g., 32px for gap-8) to the offset
-  const buffer = 32; // Adjust buffer as needed
-  const xOffset = Math.max(0, scrollWidth - windowWidth + buffer); // Add buffer here
+  const buffer = 32;
+  const xOffset = Math.max(0, scrollWidth - windowWidth + buffer);
 
+  // Determine if we are on a "desktop" size (Tailwind's 'md' breakpoint is 768px)
+  const isDesktop = windowWidth >= 768;
+
+  // Apply the transform ONLY if isDesktop is true
   const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${xOffset}px`]);
+  const xStyle = isDesktop ? x : "0%"; // Use "0%" for x on mobile
 
   return (
     <section ref={targetRef} className="relative h-auto md:h-[200vh] bg-transparent py-24 md:py-0">
       <div className="md:sticky top-0 flex h-auto md:h-screen items-center overflow-hidden">
-        {/* Adjusted padding calculation: Use viewport width for container width */}
         <div className="w-screen px-6 md:px-0">
             <motion.h2
                 initial={{ opacity: 0, y: 20 }}
@@ -80,12 +81,11 @@ const HorizontalScrollCarousel = () => {
             >
                 Featured Games
             </motion.h2>
-             {/* Make sure the container holding the cards spans the full width needed */}
-             {/* Adding px-4 md:px-8 for start/end visual padding if desired */}
+            {/* UPDATED: Apply the xStyle conditionally */}
             <motion.div
                 ref={containerRef}
-                style={{ x }}
-                className="flex gap-4 md:gap-8 px-4 md:px-8 py-4 md:py-0 overflow-x-auto md:overflow-x-visible no-scrollbar md:no-scrollbar-md"
+                style={{ x: xStyle }} // Use the conditional style here
+                className="flex gap-4 md:gap-8 px-4 md:px-8 py-4 md:py-0 overflow-x-auto md:overflow-x-visible no-scrollbar" // Removed md:no-scrollbar-md as it wasn't defined
             >
                 {cards.map((card) => (
                     <Card card={card} key={card.id} />
