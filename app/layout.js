@@ -1,31 +1,41 @@
 // app/layout.js
-
 "use client";
 
-import { useEffect } from "react";
+import { useState, useEffect } from "react"; // Ensure useState and useEffect are imported
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
-import SmoothScroller from "./components/SmoothScroller.jsx";
-import CustomCursor from "./components/CustomCursor.jsx"; // 1. Import the new component
+import ContactModal from "./components/ContactModal.jsx";
+import GlobalParticleBackground from "./components/GlobalParticleBackground.jsx";
+import RefreshHandler from "./components/RefreshHandler.jsx";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // State for the modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Removed the useEffect scroll-to-top, as it's handled by RefreshHandler
 
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-neutral-900 text-neutral-200`}>
-        <CustomCursor /> {/* 2. Place the cursor here */}
-        <SmoothScroller>
-          <Navbar />
+      <body className={`${inter.className} bg-[#0F0F0F] text-neutral-200 antialiased`}>
+        {/* Refresh handler component */}
+        <RefreshHandler />
+        {/* Global particle background */}
+        <GlobalParticleBackground />
+        {/* Main content wrapper */}
+        <div className="relative z-10">
+          {/* Pass the function to open the modal to the Navbar */}
+          <Navbar onGetInTouchClick={() => setIsModalOpen(true)} />
+          {/* Page content */}
           {children}
+          {/* Footer component */}
           <Footer />
-        </SmoothScroller>
+        </div>
+        {/* Contact modal component, controlled by state */}
+        <ContactModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
       </body>
     </html>
   );

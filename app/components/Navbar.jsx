@@ -4,66 +4,56 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { usePathname } from "next/navigation";
-import { useLenis } from "@studio-freight/react-lenis"; // 1. Import the useLenis hook
+import Image from 'next/image';
 
 const navLinks = ["Games", "Team", "News"];
 
-const Navbar = () => {
+const Navbar = ({ onGetInTouchClick }) => {
   const [hoveredLink, setHoveredLink] = useState(null);
   const [visible, setVisible] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
-  const lenis = useLenis(); // 2. Get access to the Lenis instance
-
   useEffect(() => {
     if (isHomePage) {
-      const handleScroll = () => {
-        if (window.scrollY > window.innerHeight * 1.7) {
-          setVisible(true);
-        } else {
-          setVisible(false);
-        }
-      };
+      const handleScroll = () => { window.scrollY > window.innerHeight * 1.7 ? setVisible(true) : setVisible(false); };
       window.addEventListener("scroll", handleScroll);
+      handleScroll();
       return () => window.removeEventListener("scroll", handleScroll);
+    } else {
+      setVisible(true);
     }
-  }, [isHomePage]);
+  }, [isHomePage, pathname]);
 
-  const navVariants = {
-    visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeInOut", staggerChildren: 0.1 } },
-    hidden: { y: -100, opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } },
-  };
-  
-  const linkVariants = {
-    visible: { y: 0, opacity: 1 },
-    hidden: { y: -20, opacity: 0 },
-  };
+  const navVariants = { visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeInOut", staggerChildren: 0.1 } }, hidden: { y: -100, opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }, };
+  const linkVariants = { visible: { y: 0, opacity: 1 }, hidden: { y: -20, opacity: 0 }, };
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-  
-  // 3. Create a function to handle the click
-  const handleScrollToContact = () => {
-    if (lenis) {
-      lenis.scrollTo('#contact-section', { offset: 0, duration: 2 });
-    }
-  };
+  const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
   return (
     <>
       <motion.nav
         variants={navVariants}
         initial="hidden"
-        animate={isHomePage ? (visible ? "visible" : "hidden") : "visible"}
-        className="fixed top-0 left-0 right-0 z-50 bg-black/40 backdrop-blur-lg"
+        animate={visible ? "visible" : "hidden"}
+        className="fixed top-0 left-0 right-0 z-40 bg-black/40 backdrop-blur-lg"
       >
         <div className="container mx-auto flex items-center justify-between px-4 py-3 md:px-6 md:py-4">
-          <motion.a href="/" variants={linkVariants} className="text-xl font-bold text-white">
-            SleepyHeads
+
+          <motion.a href="/" variants={linkVariants} className="block">
+            <Image
+              src="/images/logo.png" // Adjust filename if needed
+              alt="SleepyHeads Logo"
+              width={160} // Intrinsic width
+              height={40}  // Intrinsic height
+              // UPDATED: Increased height classes slightly more
+              className="h-10 md:h-14 w-auto" // Was h-9 md:h-12
+              priority
+            />
           </motion.a>
+
+          {/* --- DESKTOP MENU LINKS --- */}
           <ul className="hidden md:flex items-center gap-8" onMouseLeave={() => setHoveredLink(null)}>
             {navLinks.map((link) => (
               <motion.li key={link} variants={linkVariants} onMouseEnter={() => setHoveredLink(link)} className="relative text-sm font-medium text-neutral-300 transition-colors hover:text-white">
@@ -72,39 +62,33 @@ const Navbar = () => {
               </motion.li>
             ))}
           </ul>
-          
-          {/* 4. Changed back to a button and added the onClick handler */}
-          <motion.button
-            onClick={handleScrollToContact}
-            variants={linkVariants}
-            whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(99, 102, 241, 0.6)" }}
-            whileTap={{ scale: 0.95 }}
-            className="hidden md:block rounded-full bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-500"
-          >
+
+          {/* --- DESKTOP "GET IN TOUCH" BUTTON --- */}
+          <motion.button onClick={onGetInTouchClick} variants={linkVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="hidden md:block rounded-full bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-500">
             Get in Touch
           </motion.button>
-          
+
+          {/* --- MOBILE HAMBURGER ICON --- */}
           <div className="md:hidden">
-            <motion.button onClick={toggleMobileMenu} variants={linkVariants} className="text-2xl text-white">
-                <FiMenu />
+            <motion.button onClick={toggleMobileMenu} variants={linkVariants} className="text-2xl text-white focus:outline-none">
+              {mobileMenuOpen ? <FiX /> : <FiMenu />}
             </motion.button>
           </div>
         </div>
+
+        {/* --- Animated Bottom Border --- */}
         <div className="absolute bottom-0 left-0 right-0 h-px w-full overflow-hidden">
             <motion.div initial={{ x: "-100%" }} animate={{ x: "100%" }} transition={{ repeat: Infinity, repeatType: "loop", duration: 2, ease: "linear" }} className="h-full w-full bg-gradient-to-r from-transparent via-indigo-400 to-transparent" />
         </div>
       </motion.nav>
+
+      {/* --- MOBILE MENU PANEL --- */}
       {mobileMenuOpen && (
-          <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.3, ease: "easeInOut" }} className="fixed top-0 right-0 z-40 h-screen w-full bg-neutral-950 p-6">
-             <div className="flex justify-end mb-8">
-                <button onClick={toggleMobileMenu} className="text-3xl text-white"><FiX /></button>
-             </div>
-             <ul className="flex flex-col items-center gap-8">
-                {navLinks.map((link) => (
-                    <li key={link} className="text-2xl font-semibold text-neutral-300 hover:text-white">
-                        <a href={`/${link.toLowerCase()}`}>{link}</a>
-                    </li>
-                ))}
+          <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.3, ease: "easeInOut" }} className="fixed top-0 right-0 z-30 h-screen w-64 bg-neutral-950 p-6 shadow-lg md:hidden">
+             <div className="flex justify-end mb-8"> <button onClick={toggleMobileMenu} className="text-3xl text-white"><FiX /></button> </div>
+             <ul className="flex flex-col items-center gap-8 mt-16">
+                {navLinks.map((link) => ( <li key={link} className="text-2xl font-semibold text-neutral-300 hover:text-white"> <a href={`/${link.toLowerCase()}`} onClick={toggleMobileMenu}>{link}</a> </li> ))}
+                <li className="w-full mt-4"> <button onClick={() => { onGetInTouchClick(); toggleMobileMenu(); }} className="w-full rounded-md bg-indigo-600 px-4 py-2 text-lg font-semibold text-white transition-colors hover:bg-indigo-500"> Get in Touch </button> </li>
              </ul>
           </motion.div>
       )}

@@ -1,66 +1,67 @@
+// app/team/page.js
 "use client";
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useState } from "react";
 import { FiTwitter, FiLinkedin, FiGithub } from "react-icons/fi";
 
 const teamMembers = [
-  { name: "Ayush Sinha", role: "Web Developer", image: "https://placehold.co/500x500/1a1a1a/ffffff/png?text=AS", bio: "The architect of our digital presence, Ayush combines cutting-edge web technology with a keen eye for design, ensuring our worlds are accessible and performant on every screen.", socials: { twitter: "#", linkedin: "#", github: "#" } },
-  { name: "Friend One", role: "Game Developer", image: "https://placehold.co/500x500/4f46e5/ffffff/png?text=GD", bio: "The heart of our gameplay, turning complex ideas into interactive reality. With a passion for elegant code and compelling mechanics, they build the engines that power our adventures.", socials: { twitter: "#", linkedin: "#", github: "#" } },
-  { name: "Friend Two", role: "3D Artist", image: "https://placehold.co/500x500/2a2a2a/ffffff/png?text=3D", bio: "A master of form and dimension, they sculpt the characters, creatures, and environments that make our games immersive. Every polygon is placed with purpose and artistry.", socials: { twitter: "#", linkedin: "#", github: "#" } },
-  { name: "Friend Three", role: "2D Artist & Illustrator", image: "https://placehold.co/500x500/3a3a3a/ffffff/png?text=2D", bio: "The visionary behind our visual identity. From concept sketches to final UI elements, they paint the mood and style of our worlds, ensuring every frame is a work of art.", socials: { twitter: "#", linkedin: "#", github: "#" } },
+  { name: "Ayush Sinha", role: "Web Developer", image: "https://placehold.co/400x600/111/FFFFFF?text=AS", backImage: "https://placehold.co/150x150/4B5563/FFFFFF?text=AS", bio: "Ayush builds our online presence...", color: "#10B981", socials: { twitter: "#", linkedin: "#", github: "#" } },
+  { name: "Friend One", role: "Lead Developer", image: "https://placehold.co/400x600/111/FFFFFF?text=RKM", backImage: "https://placehold.co/150x150/4B5563/FFFFFF?text=RKM", bio: "Rahul is the architect of our digital worlds...", color: "#FACC15", socials: { twitter: "#", linkedin: "#", github: "#" } },
+  { name: "Friend Two", role: "3D Artist & UI/UX", image: "https://placehold.co/400x600/111/FFFFFF?text=NS", backImage: "https://placehold.co/150x150/4B5563/FFFFFF?text=NS", bio: "Narayan brings our visuals to life...", color: "#6366F1", socials: { twitter: "#", linkedin: "#", github: "#" } },
+  { name: "Friend Three", role: "2D Artist", image: "https://placehold.co/400x600/111/FFFFFF?text=VK", backImage: "https://placehold.co/150x150/4B5563/FFFFFF?text=VK", bio: "Vivek is the master of pixels and palettes...", color: "#F43F5E", socials: { twitter: "#", linkedin: "#", github: "#" } },
 ];
 
-const TeamMemberRow = ({ member, imageOnLeft }) => {
-  const imageVariants = { hidden: { opacity: 0, x: imageOnLeft ? -50 : 50 }, visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeInOut" } } };
-  const textVariants = { hidden: { opacity: 0, x: imageOnLeft ? 50 : -50 }, visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeInOut" } } };
+const TeamMemberFlipCard = ({ member, variants }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const flipCard = () => setIsFlipped(!isFlipped);
 
   return (
-    <div className={`flex flex-col ${imageOnLeft ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-8 md:gap-12 mb-20`}>
-      <motion.div variants={imageVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className="w-full md:w-1/3">
-        {/* NEW & CHANGED: Added 'group' and 'overflow-hidden' classes */}
-        <div className="relative aspect-square rounded-lg overflow-hidden group">
-          <Image
-            src={member.image}
-            alt={member.name}
-            fill
-            // NEW & CHANGED: Added classes for the grayscale effect and hover transition
-            className="rounded-lg object-cover grayscale transition-all duration-500 ease-in-out group-hover:grayscale-0 group-hover:scale-105"
-          />
-        </div>
-      </motion.div>
-
-      <motion.div variants={textVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className="w-full md:w-2/3">
-        <h3 className="text-3xl font-bold text-white mb-2">{member.name}</h3>
-        <p className="text-xl text-indigo-400 font-semibold mb-4">{member.role}</p>
-        <p className="text-neutral-300 mb-6">{member.bio}</p>
-        <div className="flex gap-5 text-2xl text-neutral-400">
-          <a href={member.socials.twitter} className="hover:text-white transition-colors"><FiTwitter /></a>
-          <a href={member.socials.linkedin} className="hover:text-white transition-colors"><FiLinkedin /></a>
-          <a href={member.socials.github} className="hover:text-white transition-colors"><FiGithub /></a>
-        </div>
-      </motion.div>
-    </div>
+    <motion.div variants={variants} className="w-full">
+      <div className="card-container aspect-[2/3] cursor-pointer group" onClick={flipCard} style={{ perspective: '1000px' }}>
+        <motion.div className="card-inner relative w-full h-full" initial={false} animate={{ rotateY: isFlipped ? 180 : 0 }} transition={{ duration: 0.6, ease: "easeInOut" }} style={{ transformStyle: "preserve-3d" }}>
+          {/* Card Front */}
+          <div className="card-front absolute w-full h-full rounded-lg overflow-hidden transition-transform duration-300 ease-in-out transform group-hover:scale-[1.03]" style={{ backfaceVisibility: 'hidden' }}>
+            <Image src={member.image} alt={member.name} fill className="object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+            <div className="absolute bottom-0 left-0 right-0 p-6 text-center text-white">
+              <h4 className="text-2xl font-bold">{member.name}</h4>
+            </div>
+          </div>
+          {/* Card Back */}
+          <div className="card-back absolute w-full h-full rounded-lg overflow-hidden bg-gray-800 p-6 flex flex-col" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+            <Image src={member.backImage} alt={member.name} width={96} height={96} className="w-24 h-24 rounded-full mx-auto mb-4 border-2" style={{ borderColor: member.color }} />
+            <h4 className="text-xl font-bold text-center text-white">{member.name}</h4>
+            <p className="text-center mb-4 font-semibold" style={{ color: member.color }}>{member.role}</p>
+            <p className="text-gray-300 text-sm text-center flex-grow">{member.bio}</p>
+            <div className="flex justify-center space-x-4 mt-4">
+              <a href={member.socials.twitter} onClick={(e)=> e.stopPropagation()} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><FiTwitter className="w-6 h-6"/></a>
+              <a href={member.socials.linkedin} onClick={(e)=> e.stopPropagation()} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><FiLinkedin className="w-6 h-6"/></a>
+              <a href={member.socials.github} onClick={(e)=> e.stopPropagation()} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><FiGithub className="w-6 h-6"/></a>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 };
 
 const TeamPage = () => {
+    const containerVariants = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.1, delayChildren: 0.5 } } };
+    const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+
   return (
-    <div className="bg-neutral-900 min-h-screen pt-32 pb-24">
+    // UPDATED: Background confirmed transparent
+    <div className="bg-transparent min-h-screen pt-32 pb-24">
       <div className="container mx-auto px-6">
         <div className="text-center mb-20">
-          <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut" }} className="text-5xl md:text-7xl font-black text-white uppercase">
-            Meet the Team
-          </motion.h1>
-          <motion.p initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }} className="text-lg text-neutral-400 mt-4">
-            The creative minds behind SleepyHeads.
-          </motion.p>
+          <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut" }} className="text-5xl md:text-7xl font-black text-white uppercase"> Meet the Team </motion.h1>
+          <motion.p initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }} className="text-lg text-neutral-400 mt-4"> The creative minds behind SleepyHeads. </motion.p>
         </div>
-        <div className="max-w-5xl mx-auto">
-          {teamMembers.map((member, index) => (
-            <TeamMemberRow key={member.name} member={member} imageOnLeft={index % 2 === 0} />
-          ))}
-        </div>
+        <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          {teamMembers.map((member) => ( <TeamMemberFlipCard key={member.name} member={member} variants={itemVariants} /> ))}
+        </motion.div>
       </div>
     </div>
   );
