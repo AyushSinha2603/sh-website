@@ -41,7 +41,6 @@ const TeamMemberFlipCard = ({ member, variants }) => {
             <p className="text-center mb-4 font-semibold" style={{ color: member.color }}>{member.role}</p>
             <p className="text-gray-300 text-sm text-center flex-grow">{member.bio}</p>
             <div className="flex justify-center space-x-4 mt-4">
-              <a href={member.socials.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><FiTwitter className="w-6 h-6"/></a>
               <a href={member.socials.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><FiLinkedin className="w-6 h-6"/></a>
               <a href={member.socials.github} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><FiGithub className="w-6 h-6"/></a>
             </div>
