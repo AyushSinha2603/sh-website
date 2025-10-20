@@ -44,3 +44,4 @@ const AboutSection = ({ heroScrollProgress }) => {
 };
 
 export default AboutSection;
+//bug check
