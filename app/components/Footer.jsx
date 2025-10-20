@@ -74,7 +74,7 @@ const Footer = () => {
 
           {/* Copyright Information */}
           <motion.div variants={itemVariants} className="border-t border-neutral-800 pt-6 text-xs text-neutral-500">
-            <p>&copy; {new Date().getFullYear()} SleepyHeads Studios. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} SleepyHead Studios. All rights reserved.</p>
           </motion.div>
         </motion.div>
       </div>
