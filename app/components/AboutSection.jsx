@@ -20,7 +20,7 @@ const AboutSection = ({ heroScrollProgress }) => {
           className="max-w-4xl mx-auto text-center pointer-events-auto"
         >
           <h2 className="text-4xl lg:text-5xl font-bold text-white">
-            About <span className="text-indigo-500">SleepyHead</span>
+            About <span className="text-indigo-500">SleepyHead Studios</span>
           </h2>
           <p className="mt-4 text-lg text-gray-400">The dreamers behind the code.</p>
           <div className="mt-12 text-left space-y-8">
