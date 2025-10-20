@@ -1,4 +1,3 @@
-// app/team/page.js
 "use client";
 
 import { motion } from "framer-motion";
@@ -6,20 +5,26 @@ import Image from "next/image";
 import { useState } from "react";
 import { FiTwitter, FiLinkedin, FiGithub } from "react-icons/fi";
 
+// --- UPDATED: Using unique backImage paths for each member ---
 const teamMembers = [
-  { name: "Ayush Sinha", role: "Web Developer", image: "https://placehold.co/400x600/111/FFFFFF?text=AS", backImage: "https://placehold.co/150x150/4B5563/FFFFFF?text=AS", bio: "Ayush builds our online presence...", color: "#10B981", socials: { twitter: "#", linkedin: "#", github: "#" } },
-  { name: "Friend One", role: "Lead Developer", image: "https://placehold.co/400x600/111/FFFFFF?text=RKM", backImage: "https://placehold.co/150x150/4B5563/FFFFFF?text=RKM", bio: "Rahul is the architect of our digital worlds...", color: "#FACC15", socials: { twitter: "#", linkedin: "#", github: "#" } },
-  { name: "Friend Two", role: "3D Artist & UI/UX", image: "https://placehold.co/400x600/111/FFFFFF?text=NS", backImage: "https://placehold.co/150x150/4B5563/FFFFFF?text=NS", bio: "Narayan brings our visuals to life...", color: "#6366F1", socials: { twitter: "#", linkedin: "#", github: "#" } },
-  { name: "Friend Three", role: "2D Artist", image: "https://placehold.co/400x600/111/FFFFFF?text=VK", backImage: "https://placehold.co/150x150/4B5563/FFFFFF?text=VK", bio: "Vivek is the master of pixels and palettes...", color: "#F43F5E", socials: { twitter: "#", linkedin: "#", github: "#" } },
+  { name: "Rahul Kumar Mahato", role: "Lead Developer", image: "/images/rahul_cover.jpeg", backImage: "/images/rahul_in.jpg", bio: "Rahul is the architect of our digital worlds, turning complex ideas into seamless gameplay.", color: "#FACC15", socials: { linkedin: "https://www.linkedin.com/in/rahul-kumar-mahato-36938931a", github: "https://github.com/rahul-240505" } },
+  { name: "Narayan Satapathy", role: "3D Artist & UI/UX", image: "/images/narayan_cover.jpeg", backImage: "/images/narayan_in.png", bio: "Narayan brings our visuals to life, sculpting immersive 3D worlds and designing intuitive user interfaces.", color: "#6366F1", socials: { linkedin: "https://www.linkedin.com/in/narayan-satapathy-a242341b3", github: "https://github.com/Narayan69" } },
+  { name: "Vivek Kumar", role: "2D Artist", image: "/images/vivek_cover.jpeg", backImage: "/images/vivek_in.jpeg", bio: "Vivek is the master of pixels and palettes, creating stunning concept art and 2D assets that define our games' visual identity.", color: "#F43F5E", socials: { linkedin: "https://www.linkedin.com/in/vivek-kashyap-b24b59295", github: "https://github.com/vivekkashyap17" } },
+  { name: "Ayush Sinha", role: "Web Developer", image: "/images/ayush_cover.jpeg", backImage: "/images/ayush_in.jpeg", bio: "Ayush builds our online presence, ensuring our community has a fast, beautiful, and reliable place to connect with us.", color: "#10B981", socials: { linkedin: "www.linkedin.com/in/ayush-sinha-70046a319", github: "https://github.com/AyushSinha2603" } },
 ];
 
 const TeamMemberFlipCard = ({ member, variants }) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const flipCard = () => setIsFlipped(!isFlipped);
+  
+  // This prevents clicks on social links from flipping the card
+  const handleFlip = (e) => {
+    if (e.target.closest('a')) return;
+    setIsFlipped(!isFlipped);
+  };
 
   return (
     <motion.div variants={variants} className="w-full">
-      <div className="card-container aspect-[2/3] cursor-pointer group" onClick={flipCard} style={{ perspective: '1000px' }}>
+      <div className="card-container aspect-[2/3] cursor-pointer group" onClick={handleFlip} style={{ perspective: '1000px' }}>
         <motion.div className="card-inner relative w-full h-full" initial={false} animate={{ rotateY: isFlipped ? 180 : 0 }} transition={{ duration: 0.6, ease: "easeInOut" }} style={{ transformStyle: "preserve-3d" }}>
           {/* Card Front */}
           <div className="card-front absolute w-full h-full rounded-lg overflow-hidden transition-transform duration-300 ease-in-out transform group-hover:scale-[1.03]" style={{ backfaceVisibility: 'hidden' }}>
@@ -31,14 +36,14 @@ const TeamMemberFlipCard = ({ member, variants }) => {
           </div>
           {/* Card Back */}
           <div className="card-back absolute w-full h-full rounded-lg overflow-hidden bg-gray-800 p-6 flex flex-col" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-            <Image src={member.backImage} alt={member.name} width={96} height={96} className="w-24 h-24 rounded-full mx-auto mb-4 border-2" style={{ borderColor: member.color }} />
+            <Image src={member.backImage} alt={member.name} width={96} height={96} className="w-24 h-24 rounded-full mx-auto mb-4 border-2 object-cover" style={{ borderColor: member.color }} />
             <h4 className="text-xl font-bold text-center text-white">{member.name}</h4>
             <p className="text-center mb-4 font-semibold" style={{ color: member.color }}>{member.role}</p>
             <p className="text-gray-300 text-sm text-center flex-grow">{member.bio}</p>
             <div className="flex justify-center space-x-4 mt-4">
-              <a href={member.socials.twitter} onClick={(e)=> e.stopPropagation()} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><FiTwitter className="w-6 h-6"/></a>
-              <a href={member.socials.linkedin} onClick={(e)=> e.stopPropagation()} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><FiLinkedin className="w-6 h-6"/></a>
-              <a href={member.socials.github} onClick={(e)=> e.stopPropagation()} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><FiGithub className="w-6 h-6"/></a>
+              <a href={member.socials.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><FiTwitter className="w-6 h-6"/></a>
+              <a href={member.socials.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><FiLinkedin className="w-6 h-6"/></a>
+              <a href={member.socials.github} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white"><FiGithub className="w-6 h-6"/></a>
             </div>
           </div>
         </motion.div>
@@ -52,7 +57,6 @@ const TeamPage = () => {
     const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
   return (
-    // UPDATED: Background confirmed transparent
     <div className="bg-transparent min-h-screen pt-32 pb-24">
       <div className="container mx-auto px-6">
         <div className="text-center mb-20">
