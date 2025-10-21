@@ -3,21 +3,26 @@
 import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 import { useRef } from "react";
 
-const SECTION_HEIGHT = 800;
+// Increased height for slower animation (was 800, now 4000)
+const SECTION_HEIGHT = 4000;
 
 // Update HeroSection to accept children
-const HeroSection = ({ children }) => { // Ensure children is accepted here
+const HeroSection = ({ children }) => {
   const targetRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: ["start start", "end end"],
   });
 
-  const clipStart = useTransform(scrollYProgress, [0, 1], [25, 0]);
-  const clipEnd = useTransform(scrollYProgress, [0, 1], [75, 100]);
+  // Slow down the animation by using only the first 50% of scroll for the main animation
+  // The last 50% will keep the final state sticky
+  const clipStart = useTransform(scrollYProgress, [0, 0.5], [25, 0]);
+  const clipEnd = useTransform(scrollYProgress, [0, 0.5], [75, 100]);
   const clipPath = useMotionTemplate`polygon(${clipStart}% ${clipStart}%, ${clipEnd}% ${clipStart}%, ${clipEnd}% ${clipEnd}%, ${clipStart}% ${clipEnd}%)`;
-  const backgroundSize = useTransform(scrollYProgress, [0, 1], ["100%", "80%"]);
-  const imageOpacity = useTransform(scrollYProgress, [0.8, 1], [1, 0]); // Fades image out
+  const backgroundSize = useTransform(scrollYProgress, [0, 0.5], ["100%", "80%"]);
+  
+  // Fade out the image between 70-85% to make room for About section
+  const imageOpacity = useTransform(scrollYProgress, [0.7, 0.85], [1, 0]);
 
   return (
     <section
@@ -29,7 +34,7 @@ const HeroSection = ({ children }) => { // Ensure children is accepted here
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/* Animated Background Image */}
         <motion.div
-          className="absolute inset-0 bg-cover bg-center" // Absolute positioning
+          className="absolute inset-0 bg-cover bg-center"
           style={{
             clipPath: clipPath,
             backgroundSize: backgroundSize,
@@ -41,14 +46,10 @@ const HeroSection = ({ children }) => { // Ensure children is accepted here
         />
 
         {/* Render children (About Section content) ON TOP */}
-        {/* Position absolutely, ensure z-index */}
         <div className="absolute inset-0 z-10">
-            {children} {/* Make sure this line exists */}
+            {children}
         </div>
-
       </div>
-       {/* Gradient removed previously */}
-       {/* Scroll Indicator removed previously */}
     </section>
   );
 };

@@ -60,7 +60,7 @@ const TeamPage = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-20">
           <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut" }} className="text-5xl md:text-7xl font-black text-white uppercase"> Meet the Team </motion.h1>
-          <motion.p initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }} className="text-lg text-neutral-400 mt-4"> The creative minds behind SleepyHeads. </motion.p>
+          <motion.p initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }} className="text-lg text-neutral-400 mt-4"> The creative minds behind SleepyHead Studios. </motion.p>
         </div>
         <motion.div variants={containerVariants} initial="hidden" animate="visible" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
           {teamMembers.map((member) => ( <TeamMemberFlipCard key={member.name} member={member} variants={itemVariants} /> ))}

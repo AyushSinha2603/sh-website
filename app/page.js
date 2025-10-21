@@ -2,7 +2,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll } from "framer-motion";
 import HeroSection from "./components/HeroSection.jsx";
 import AboutSection from "./components/AboutSection.jsx";
 // REMOVED: import HorizontalScrollCarousel from "./components/HorizontalScrollCarousel.jsx";

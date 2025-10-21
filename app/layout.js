@@ -9,6 +9,7 @@ import Footer from "./components/Footer.jsx";
 import ContactModal from "./components/ContactModal.jsx";
 import GlobalParticleBackground from "./components/GlobalParticleBackground.jsx";
 import RefreshHandler from "./components/RefreshHandler.jsx";
+import HOC from "./components/HOC";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.className} bg-[#0F0F0F] text-neutral-200 antialiased`}>
+      <HOC>
         {/* Refresh handler component */}
         <RefreshHandler />
         {/* Global particle background */}
@@ -36,6 +38,8 @@ export default function RootLayout({ children }) {
         </div>
         {/* Contact modal component, controlled by state */}
         <ContactModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+      </HOC>
+        
       </body>
     </html>
   );

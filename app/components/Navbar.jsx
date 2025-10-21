@@ -17,7 +17,15 @@ const Navbar = ({ onGetInTouchClick }) => {
 
   useEffect(() => {
     if (isHomePage) {
-      const handleScroll = () => { window.scrollY > window.innerHeight * 1.7 ? setVisible(true) : setVisible(false); };
+      const handleScroll = () => {
+        // Hero section is 4000px + 100vh tall
+        // About section reaches full opacity at 95% of hero scroll
+        // Calculate: (4000 + window.innerHeight) * 0.95
+        const heroSectionHeight = 4000 + window.innerHeight;
+        const aboutFullyVisibleAt = heroSectionHeight * 0.95;
+        
+        window.scrollY > aboutFullyVisibleAt ? setVisible(true) : setVisible(false);
+      };
       window.addEventListener("scroll", handleScroll);
       handleScroll();
       return () => window.removeEventListener("scroll", handleScroll);
@@ -43,12 +51,11 @@ const Navbar = ({ onGetInTouchClick }) => {
 
           <motion.a href="/" variants={linkVariants} className="block">
             <Image
-              src="/images/logo.png" // Adjust filename if needed
+              src="/images/logo.png"
               alt="SleepyHeads Logo"
-              width={160} // Intrinsic width
-              height={40}  // Intrinsic height
-              // UPDATED: Increased height classes slightly more
-              className="h-10 md:h-14 w-auto" // Was h-9 md:h-12
+              width={160}
+              height={40}
+              className="h-10 md:h-14 w-auto"
               priority
             />
           </motion.a>
