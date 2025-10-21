@@ -17,7 +17,7 @@ const Footer = () => {
         <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.5 }}>
           {/* Studio Name */}
           <motion.h3 variants={itemVariants} className="text-2xl font-bold mb-2">
-            SleepyHeads
+            SleepyHead Studios
           </motion.h3>
           {/* Tagline */}
           <motion.p variants={itemVariants} className="text-sm text-neutral-500 mb-6">
