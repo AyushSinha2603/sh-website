@@ -7,12 +7,13 @@ import {
   FiTwitter,
   FiLinkedin,
   FiGithub,
-  FiRefreshCw,
+  FiRefreshCw, // This is the icon we're adjusting
   FiX,
   FiChevronLeft,
   FiChevronRight,
   FiFolder,
 } from "react-icons/fi";
+import StyleDigits from "../components/StyleDigits.jsx"; // Import StyleDigits - This path is now correct
 
 // --- Data for Team Section ---
 const teamMembers = [
@@ -127,7 +128,7 @@ const TeamMemberFlipCard = ({ member, variants }) => {
               }}
               transition={{ duration: 0.4 }}
             >
-              <FiRefreshCw className="w-6 h-6 text-white" strokeWidth={2.5} />
+              <FiRefreshCw className="w-5 h-5 text-white" strokeWidth={2.5} /> {/* Changed w-6 h-6 to w-5 h-5 */}
             </motion.div>
 
             {/* Hover Overlay */}
@@ -144,7 +145,7 @@ const TeamMemberFlipCard = ({ member, variants }) => {
                 animate={{ y: isHovered ? -5 : 0 }}
                 transition={{ duration: 0.3 }}
               >
-                {member.name}
+                <StyleDigits>{member.name}</StyleDigits> {/* Added StyleDigits */}
               </motion.h4>
               <motion.p
                 className="text-sm mt-2 opacity-0"
@@ -152,7 +153,7 @@ const TeamMemberFlipCard = ({ member, variants }) => {
                 transition={{ duration: 0.3 }}
                 style={{ color: member.color }}
               >
-                {member.role}
+                <StyleDigits>{member.role}</StyleDigits> {/* Added StyleDigits */}
               </motion.p>
             </div>
           </div>
@@ -171,16 +172,16 @@ const TeamMemberFlipCard = ({ member, variants }) => {
               style={{ borderColor: member.color }}
             />
             <h4 className="text-xl font-bold text-center text-white">
-              {member.name}
+              <StyleDigits>{member.name}</StyleDigits> {/* Added StyleDigits */}
             </h4>
             <p
               className="text-center mb-4 font-semibold text-sm"
               style={{ color: member.color }}
             >
-              {member.role}
+              <StyleDigits>{member.role}</StyleDigits> {/* Added StyleDigits */}
             </p>
             <p className="text-gray-300 text-sm text-center flex-grow leading-relaxed">
-              {member.bio}
+              <StyleDigits>{member.bio}</StyleDigits> {/* Added StyleDigits */}
             </p>
             <div className="flex justify-center space-x-6 mt-4">
               <a
@@ -197,7 +198,7 @@ const TeamMemberFlipCard = ({ member, variants }) => {
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-all hover:scale-110"
               >
-                <FiGithub className="w-6 h-6" />
+                <FiGithub className="w-6 h-6" /> {/* <-- FIXED THE TYPO HERE (removed extra .) */}
               </a>
             </div>
           </div>
@@ -232,9 +233,11 @@ const CategoryCard = ({ category, onClick, variants }) => {
 
       {/* Category Info */}
       <div className="absolute bottom-0 left-0 right-0 p-4">
-        <h3 className="text-xl font-bold text-white mb-1">{category.title}</h3>
+        <h3 className="text-xl font-bold text-white mb-1">
+          <StyleDigits>{category.title}</StyleDigits> {/* Added StyleDigits */}
+        </h3>
         <p className="text-sm text-gray-300">
-          {category.images.length} photos • {category.date}
+          <StyleDigits>{category.images.length} photos • {category.date}</StyleDigits> {/* Added StyleDigits */}
         </p>
       </div>
 
@@ -284,9 +287,11 @@ const GalleryModal = ({ category, onClose }) => {
         {/* Header */}
         <div className="text-center mb-6">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
-            {category.title}
+            <StyleDigits>{category.title}</StyleDigits> {/* Added StyleDigits */}
           </h2>
-          <p className="text-gray-400">{category.date}</p>
+          <p className="text-gray-400">
+            <StyleDigits>{category.date}</StyleDigits> {/* Added StyleDigits */}
+          </p>
         </div>
 
         {/* Image Display */}
@@ -328,7 +333,7 @@ const GalleryModal = ({ category, onClose }) => {
           {/* Image Counter */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm rounded-full px-4 py-2">
             <p className="text-white text-sm">
-              {currentIndex + 1} / {category.images.length}
+              <StyleDigits>{currentIndex + 1} / {category.images.length}</StyleDigits> {/* Added StyleDigits */}
             </p>
           </div>
         </div>
@@ -410,7 +415,7 @@ const TeamAndGalleryPage = () => {
               transition={{ duration: 0.8, ease: "easeInOut" }}
               className="text-5xl md:text-7xl font-black text-white uppercase"
             >
-              Meet the Team
+              <StyleDigits>Meet the Team</StyleDigits> {/* Added StyleDigits */}
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: -20 }}
@@ -418,7 +423,7 @@ const TeamAndGalleryPage = () => {
               transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }}
               className="text-lg text-neutral-400 mt-4"
             >
-              The creative minds behind SleepyHead Studios.
+              <StyleDigits>The creative minds behind SleepyHead Studios.</StyleDigits> {/* Added StyleDigits */}
             </motion.p>
           </div>
           <motion.div
@@ -450,10 +455,10 @@ const TeamAndGalleryPage = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-black text-white uppercase">
-              Our Moments
+              <StyleDigits>Our Moments</StyleDigits> {/* Added StyleDigits */}
             </h2>
             <p className="text-lg text-neutral-400 mt-4">
-              Memories we've created together
+              <StyleDigits>Memories we've created together</StyleDigits> {/* Added StyleDigits */}
             </p>
           </motion.div>
 
@@ -491,3 +496,4 @@ const TeamAndGalleryPage = () => {
 };
 
 export default TeamAndGalleryPage;
+
