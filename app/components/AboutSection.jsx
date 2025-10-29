@@ -17,7 +17,7 @@ const AboutSection = ({ heroScrollProgress }) => {
   // It will naturally scroll away when user scrolls past the hero section
 
   return (
-    <section id="about" className="h-screen flex items-center justify-center bg-transparent pointer-events-none">
+    <section id="about" className="h-full md:h-screen flex items-center justify-center bg-transparent pointer-events-none">
       <div className="container mx-auto px-6">
         <motion.div
           style={{ 

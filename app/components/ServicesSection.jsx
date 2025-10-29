@@ -45,7 +45,7 @@ const ServicesSection = () => {
   };
 
   return (
-    <section className="bg-transparent text-white py-20">
+    <section className="bg-transparent text-white py-20 ">
       <div className="container mx-auto px-6">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="text-center text-3xl md:text-5xl font-black uppercase mb-16">
           What We Do

@@ -60,20 +60,21 @@ const Navbar = ({ onGetInTouchClick }) => {
             />
           </motion.a>
 
-          {/* --- DESKTOP MENU LINKS --- */}
-          <ul className="hidden md:flex items-center gap-8" onMouseLeave={() => setHoveredLink(null)}>
-            {navLinks.map((link) => (
-              <motion.li key={link} variants={linkVariants} onMouseEnter={() => setHoveredLink(link)} className="relative text-sm font-medium text-neutral-300 transition-colors hover:text-white">
-                 <a href={`/${link.toLowerCase()}`}>{link}</a>
-                 {hoveredLink === link && ( <motion.div layoutId="underline" className="absolute bottom-[-6px] left-0 w-full h-0.5 bg-indigo-500" /> )}
-              </motion.li>
-            ))}
-          </ul>
+          {/* Group links and CTA to the right on desktop */}
+          <div className="hidden md:flex items-center gap-6">
+            <ul className="flex items-center gap-8" onMouseLeave={() => setHoveredLink(null)}>
+              {navLinks.map((link) => (
+                <motion.li key={link} variants={linkVariants} onMouseEnter={() => setHoveredLink(link)} className="relative text-sm font-medium text-neutral-300 transition-colors hover:text-white">
+                   <a href={`/${link.toLowerCase()}`}>{link}</a>
+                   {hoveredLink === link && ( <motion.div layoutId="underline" className="absolute bottom-[-6px] left-0 w-full h-0.5 bg-indigo-500" /> )}
+                </motion.li>
+              ))}
+            </ul>
 
-          {/* --- DESKTOP "GET IN TOUCH" BUTTON --- */}
-          <motion.button onClick={onGetInTouchClick} variants={linkVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="hidden md:block rounded-full bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-500">
-            Get in Touch
-          </motion.button>
+            <motion.button onClick={onGetInTouchClick} variants={linkVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="rounded-full bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-500">
+              Get in Touch
+            </motion.button>
+          </div>
 
           {/* --- MOBILE HAMBURGER ICON --- */}
           <div className="md:hidden">
