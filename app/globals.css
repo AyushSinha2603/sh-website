@@ -136,7 +136,7 @@ p, span, div, a, li {
   /* * This is the safest fix. 
    * We are using color and weight, which will not break your font.
   */
-  color: #ffffff; /* A bright yellow to make it pop */
+  /* color: #ffffff; A bright yellow to make it pop */
   font-weight: 900; /* Use the heaviest font weight */
 
   /* * ALL OTHER OPTIONS (transform, text-stroke) ARE REMOVED

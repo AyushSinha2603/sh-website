@@ -30,7 +30,10 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className={`${rajdhani.className} ${sleepyHeadFont.variable} bg-[#0F0F0F] text-neutral-200 antialiased`}>
+      {/* UPDATED: Added 'font-semibold' to the body class list. 
+        This will make 600 the default font-weight for the Rajdhani font.
+      */}
+      <body className={`${rajdhani.className} ${sleepyHeadFont.variable} bg-[#0F0F0F] text-neutral-200 antialiased font-semibold`}>
       <HOC>
         <RefreshHandler />
         {/* <FixThreeInHeadings /> */} {/* <-- REMOVED: This was causing the bug */}
@@ -46,3 +49,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+

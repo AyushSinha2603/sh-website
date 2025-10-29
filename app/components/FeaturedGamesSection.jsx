@@ -88,7 +88,7 @@ const FeaturedGamesSection = () => {
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black text-white uppercase">Featured Games</h2>
-          <p className="text-lg text-neutral-400 mt-4">A glimpse into our crafted worlds.</p>
+          <p className="text-2xl text-neutral-400 mt-4">A glimpse into our crafted worlds.</p>
         </div>
 
         {/* Games List - Alternating Layout */}

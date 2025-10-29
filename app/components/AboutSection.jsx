@@ -29,7 +29,7 @@ const AboutSection = ({ heroScrollProgress }) => {
           <h2 className="text-4xl lg:text-5xl font-bold text-white">
             About <span className="text-indigo-600">SleepyHead Studios</span>
           </h2>
-          <p className="mt-4 text-lg text-gray-400">The dreamers behind the code.</p>
+          <p className="mt-4 text-2xl text-gray-400">The dreamers behind the code.</p>
           <div className="mt-12 text-left space-y-8">
             <div>
               <h3 className="text-3xl font-bold text-white mb-4">Our Origin Story</h3>
