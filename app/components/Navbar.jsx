@@ -21,7 +21,7 @@ const Navbar = ({ onGetInTouchClick }) => {
         // Hero section is 4000px + 100vh tall
         // About section reaches full opacity at 95% of hero scroll
         // Calculate: (4000 + window.innerHeight) * 0.95
-        const heroSectionHeight = 4000 + window.innerHeight;
+        const heroSectionHeight = 1900 + window.innerHeight;
         const aboutFullyVisibleAt = heroSectionHeight * 0.95;
         
         window.scrollY > aboutFullyVisibleAt ? setVisible(true) : setVisible(false);
@@ -71,7 +71,7 @@ const Navbar = ({ onGetInTouchClick }) => {
               ))}
             </ul>
 
-            <motion.button onClick={onGetInTouchClick} variants={linkVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="rounded-full bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-500">
+            <motion.button onClick={onGetInTouchClick} variants={linkVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-500">
               Get in Touch
             </motion.button>
           </div>

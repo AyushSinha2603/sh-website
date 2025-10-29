@@ -124,3 +124,10 @@
 
 /* ... your existing @tailwind lines ... */
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sleepyhead), Arial, sans-serif !important;
+}
+
+p, span, div, a, li {
+  font-family: 'Rajdhani', sans-serif;
+}

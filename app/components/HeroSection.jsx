@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motio
 import { useRef } from "react";
 
 // Increased height for slower animation (was 800, now 4000)
-const SECTION_HEIGHT = 4000;
+const SECTION_HEIGHT = 2000;
 
 // Update HeroSection to accept children
 const HeroSection = ({ children }) => {

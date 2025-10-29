@@ -1,45 +1,48 @@
 // app/layout.js
 "use client";
 
-import { useState, useEffect } from "react"; // Ensure useState and useEffect are imported
-import { Inter } from "next/font/google";
+import localFont from 'next/font/local';
+
+import { useState, useEffect } from "react";
+import { Rajdhani } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import ContactModal from "./components/ContactModal.jsx";
 import GlobalParticleBackground from "./components/GlobalParticleBackground.jsx";
+import FixThreeInHeadings from "./components/FixThreeInHeadings.jsx";
 import RefreshHandler from "./components/RefreshHandler.jsx";
 import HOC from "./components/HOC";
 
-const inter = Inter({ subsets: ["latin"] });
+const sleepyHeadFont = localFont({
+  src: './fonts/SleepyHead.ttf',
+  variable: '--font-sleepyhead',
+  display: 'swap',
+  fallback: ['Arial', 'sans-serif'],
+});
+
+const rajdhani = Rajdhani({ 
+  subsets: ["latin"],
+  weight: ['300', '400', '500', '600', '700'],
+});
 
 export default function RootLayout({ children }) {
-  // State for the modal
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Removed the useEffect scroll-to-top, as it's handled by RefreshHandler
 
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-[#0F0F0F] text-neutral-200 antialiased`}>
+      <body className={`${rajdhani.className} ${sleepyHeadFont.variable} bg-[#0F0F0F] text-neutral-200 antialiased`}>
       <HOC>
-        {/* Refresh handler component */}
         <RefreshHandler />
-        {/* Global particle background */}
+        <FixThreeInHeadings />
         <GlobalParticleBackground />
-        {/* Main content wrapper */}
         <div className="relative z-10">
-          {/* Pass the function to open the modal to the Navbar */}
           <Navbar onGetInTouchClick={() => setIsModalOpen(true)} />
-          {/* Page content */}
           {children}
-          {/* Footer component */}
           <Footer />
         </div>
-        {/* Contact modal component, controlled by state */}
         <ContactModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
       </HOC>
-        
       </body>
     </html>
   );
