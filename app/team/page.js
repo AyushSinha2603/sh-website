@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react"; // 1. Import useEffect
 import {
   FiTwitter,
   FiLinkedin,
@@ -78,15 +78,25 @@ const galleryCategories = [
 const TeamMemberFlipCard = ({ member, variants }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
+  
+  // 2. Add state to check if we are on a mobile device
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 3. Check window size only on the client-side
+  useEffect(() => {
+    // This code will only run in the browser, not on the server
+    setIsMobile(window.innerWidth < 1024);
+  }, []); // Empty array ensures this runs only once when component mounts
 
   const handleClick = () => {
-    // Only handle clicks on mobile (no hover support)
-    if (window.innerWidth < 1024) {
+    // 4. Use the new 'isMobile' state
+    if (isMobile) {
       setIsFlipped(!isFlipped);
     }
   };
 
-  const shouldFlip = window.innerWidth >= 1024 ? isHovered : isFlipped;
+  // 5. Use the 'isMobile' state here too, instead of checking window.innerWidth directly
+  const shouldFlip = !isMobile ? isHovered : isFlipped;
 
   return (
     <motion.div variants={variants} className="w-full">
@@ -128,7 +138,7 @@ const TeamMemberFlipCard = ({ member, variants }) => {
               }}
               transition={{ duration: 0.4 }}
             >
-              <FiRefreshCw className="w-5 h-5 text-white" strokeWidth={2.5} /> {/* Changed w-6 h-6 to w-5 h-5 */}
+              <FiRefreshCw className="w-5 h-5 text-white" strokeWidth={2.5} />
             </motion.div>
 
             {/* Hover Overlay */}
@@ -145,7 +155,7 @@ const TeamMemberFlipCard = ({ member, variants }) => {
                 animate={{ y: isHovered ? -5 : 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <StyleDigits>{member.name}</StyleDigits> {/* Added StyleDigits */}
+                <StyleDigits>{member.name}</StyleDigits>
               </motion.h4>
               <motion.p
                 className="text-sm mt-2 opacity-0"
@@ -153,7 +163,7 @@ const TeamMemberFlipCard = ({ member, variants }) => {
                 transition={{ duration: 0.3 }}
                 style={{ color: member.color }}
               >
-                <StyleDigits>{member.role}</StyleDigits> {/* Added StyleDigits */}
+                <StyleDigits>{member.role}</StyleDigits>
               </motion.p>
             </div>
           </div>
@@ -172,16 +182,16 @@ const TeamMemberFlipCard = ({ member, variants }) => {
               style={{ borderColor: member.color }}
             />
             <h4 className="text-xl font-bold text-center text-white">
-              <StyleDigits>{member.name}</StyleDigits> {/* Added StyleDigits */}
+              <StyleDigits>{member.name}</StyleDigits>
             </h4>
             <p
               className="text-center mb-4 font-semibold text-sm"
               style={{ color: member.color }}
             >
-              <StyleDigits>{member.role}</StyleDigits> {/* Added StyleDigits */}
+              <StyleDigits>{member.role}</StyleDigits>
             </p>
             <p className="text-gray-300 text-sm text-center flex-grow leading-relaxed">
-              <StyleDigits>{member.bio}</StyleDigits> {/* Added StyleDigits */}
+              <StyleDigits>{member.bio}</StyleDigits>
             </p>
             <div className="flex justify-center space-x-6 mt-4">
               <a
@@ -198,7 +208,7 @@ const TeamMemberFlipCard = ({ member, variants }) => {
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-white transition-all hover:scale-110"
               >
-                <FiGithub className="w-6 h-6" /> {/* <-- FIXED THE TYPO HERE (removed extra .) */}
+                <FiGithub className="w-6 h-6" />
               </a>
             </div>
           </div>
@@ -234,10 +244,10 @@ const CategoryCard = ({ category, onClick, variants }) => {
       {/* Category Info */}
       <div className="absolute bottom-0 left-0 right-0 p-4">
         <h3 className="text-xl font-bold text-white mb-1">
-          <StyleDigits>{category.title}</StyleDigits> {/* Added StyleDigits */}
+          <StyleDigits>{category.title}</StyleDigits>
         </h3>
         <p className="text-sm text-gray-300">
-          <StyleDigits>{category.images.length} photos • {category.date}</StyleDigits> {/* Added StyleDigits */}
+          <StyleDigits>{category.images.length} photos • {category.date}</StyleDigits>
         </p>
       </div>
 
@@ -287,10 +297,10 @@ const GalleryModal = ({ category, onClose }) => {
         {/* Header */}
         <div className="text-center mb-6">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
-            <StyleDigits>{category.title}</StyleDigits> {/* Added StyleDigits */}
+            <StyleDigits>{category.title}</StyleDigits>
           </h2>
           <p className="text-gray-400">
-            <StyleDigits>{category.date}</StyleDigits> {/* Added StyleDigits */}
+            <StyleDigits>{category.date}</StyleDigits>
           </p>
         </div>
 
@@ -333,7 +343,7 @@ const GalleryModal = ({ category, onClose }) => {
           {/* Image Counter */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm rounded-full px-4 py-2">
             <p className="text-white text-sm">
-              <StyleDigits>{currentIndex + 1} / {category.images.length}</StyleDigits> {/* Added StyleDigits */}
+              <StyleDigits>{currentIndex + 1} / {category.images.length}</StyleDigits>
             </p>
           </div>
         </div>
@@ -415,7 +425,7 @@ const TeamAndGalleryPage = () => {
               transition={{ duration: 0.8, ease: "easeInOut" }}
               className="text-5xl md:text-7xl font-black text-white uppercase"
             >
-              <StyleDigits>Meet the Team</StyleDigits> {/* Added StyleDigits */}
+              <StyleDigits>Meet the Team</StyleDigits>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: -20 }}
@@ -423,7 +433,7 @@ const TeamAndGalleryPage = () => {
               transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }}
               className="text-lg text-neutral-400 mt-4"
             >
-              <StyleDigits>The creative minds behind SleepyHead Studios.</StyleDigits> {/* Added StyleDigits */}
+              <StyleDigits>The creative minds behind SleepyHead Studios.</StyleDigits>
             </motion.p>
           </div>
           <motion.div
@@ -455,10 +465,10 @@ const TeamAndGalleryPage = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-black text-white uppercase">
-              <StyleDigits>Our Moments</StyleDigits> {/* Added StyleDigits */}
+              <StyleDigits>Our Moments</StyleDigits>
             </h2>
             <p className="text-lg text-neutral-400 mt-4">
-              <StyleDigits>Memories we've created together</StyleDigits> {/* Added StyleDigits */}
+              <StyleDigits>Memories we've created together</StyleDigits>
             </p>
           </motion.div>
 
