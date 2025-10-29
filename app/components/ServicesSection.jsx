@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { FiCode, FiBox, FiPlay } from "react-icons/fi";
+import StyleDigits from "./StyleDigits.jsx"; // 1. Import StyleDigits
 
 const services = [
   { icon: FiBox, title: "3D Modeling & Art", description: "From character design to environmental art, we create stunning, optimized 3D assets that bring your game world to life." },
@@ -39,6 +40,7 @@ const ServicesSection = () => {
     hover: { borderColor: "rgba(99, 102, 241, 0.7)", backgroundColor: "rgba(99, 102, 241, 0.15)", scale: 1.1 },
     initial: { borderColor: "#374151", backgroundColor: "rgba(3, 7, 18, 0.5)", scale: 1 }
   };
+
   const iconVariants = {
      hover: { color: "#818cf8" }, // Indigo-400
      initial: { color: "#9ca3af" } // neutral-400
@@ -48,7 +50,8 @@ const ServicesSection = () => {
     <section className="bg-transparent text-white py-20 ">
       <div className="container mx-auto px-6">
         <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="text-center text-3xl md:text-5xl font-black uppercase mb-16">
-          What We Do
+          {/* 2. Wrap heading text */}
+          <StyleDigits>What We Do</StyleDigits>
         </motion.h2>
         <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }} className="grid md:grid-cols-3 gap-8">
           {services.map((service, index) => (
@@ -65,8 +68,14 @@ const ServicesSection = () => {
                    <service.icon className="h-8 w-8" />
                 </motion.div>
               </motion.div>
-              <h3 className="text-xl font-bold text-white mb-4">{service.title}</h3>
-              <p className="text-neutral-300">{service.description}</p>
+              <h3 className="text-xl font-bold text-white mb-4">
+                {/* 2. Wrap heading text */}
+                <StyleDigits>{service.title}</StyleDigits>
+              </h3>
+              <p className="text-neutral-300">
+                {/* 2. Wrap paragraph text (optional, but good for consistency if they ever have digits) */}
+                <StyleDigits>{service.description}</StyleDigits>
+              </p>
             </motion.div>
           ))}
         </motion.div>
@@ -76,3 +85,4 @@ const ServicesSection = () => {
 };
 
 export default ServicesSection;
+

@@ -1,12 +1,12 @@
-// app/news/page.js
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import StyleDigits from "../components/StyleDigits.jsx"; // 1. Import StyleDigits
 
 const newsData = [
   { id: 1, title: "Red Orbit Blasts Off: Closed Testing Now Live on Play Store! 🎮", date: "October 2025", description: "Our space platformer, Red Orbit, officially enters closed testing on the Play Store! We gather vital feedback to fine-tune mechanics and polish the experience before the public release." },
-  { id: 2, title: "New Project Underway: BYOG 2025 Idea Enters Full Development! 💡", date: "October 2025", description: "Following BYOG 2025, we start full development on a thrilling new game concept that proved too ambitious for the jam's deadline. We commit to continuous updates on this next major release." },
+  { id: 2, title: "New Project Underway: BYOG Idea Enters Full Development! 💡", date: "October 2025", description: "Following BYOG 2025, we start full development on a thrilling new game concept that proved too ambitious for the jam's deadline. We commit to continuous updates on this next major release." },
   { id: 3, title: "Vlog Series Launch: IGDC 2024 Experience, Part 1 is Live! 🎬", date: "June 2025", description: "We release Part 1 of the IGDC 2024 Vlog Series! This first episode focuses on our pre-IGDC journey, sharing the team's excitement of travel and reaching the grand venue." },
   { id: 4, title: "Demo Drop: Red Orbit Launches Public Demo! 🪐", date: "May 2025", description: "We release the public demo for Red Orbit, developed in just 15 days! This fast-paced space platformer challenges players to hop between platforms and efficiently deliver valuable minerals for profit." },
   { id: 5, title: "First Jam of 2025: OnTime Delivers Post-Apocalyptic Pizza! 🍕", date: "January 2025", description: "We develop OnTime, a post-apocalyptic pizza delivery game, during the Devfest 4.0 game jam. This project highlights our ability to create engaging, humorous narratives in short sprints." },
@@ -29,9 +29,18 @@ const NewsItem = ({ item, side }) => {
       <div className="relative pl-10 md:pl-0">
         <div className={`absolute top-1 left-0 -translate-x-1/2 md:left-auto md:translate-x-0 ${side === 'left' ? 'md:right-[-0.5rem]' : 'md:left-[-0.5rem]'} w-4 h-4 bg-indigo-500 rounded-full border-4 border-[#0F0F0F]`} />
         <div className="bg-neutral-800/50 rounded-lg p-6 border border-neutral-700">
-          <p className="text-sm text-indigo-400 mb-2">{item.date}</p>
-          <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
-          <p className="text-neutral-300 text-sm">{item.description}</p>
+          <p className="text-sm text-indigo-400 mb-2">
+            {/* 2. Wrap date text */}
+            <StyleDigits>{item.date}</StyleDigits>
+          </p>
+          <h3 className="text-xl font-bold text-white mb-3">
+            {/* 2. Wrap title text */}
+            <StyleDigits>{item.title}</StyleDigits>
+          </h3>
+          <p className="text-neutral-300 text-sm">
+            {/* 2. Wrap description text */}
+            <StyleDigits>{item.description}</StyleDigits>
+          </p>
         </div>
       </div>
     </motion.div>
@@ -48,8 +57,14 @@ const NewsPage = () => {
     <div className="bg-transparent min-h-screen pt-32 pb-24">
       <div className="container mx-auto px-6">
         <div className="text-center mb-20">
-          <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut" }} className="text-5xl md:text-7xl font-black text-white uppercase"> Latest Updates </motion.h1>
-          <motion.p initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }} className="text-lg text-neutral-400 mt-4"> Follow our journey and recent milestones. </motion.p>
+          <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut" }} className="text-5xl md:text-7xl font-black text-white uppercase">
+            {/* 2. Wrap heading text */}
+            <StyleDigits> Latest Updates </StyleDigits>
+          </motion.h1>
+          <motion.p initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }} className="text-lg text-neutral-400 mt-4">
+            {/* 2. Wrap paragraph text */}
+            <StyleDigits> Follow our journey and recent milestones. </StyleDigits>
+          </motion.p>
         </div>
         <div ref={timelineRef} className="relative max-w-3xl mx-auto flex flex-col items-center">
           <motion.div className="absolute top-0 left-0 md:left-1/2 md:-translate-x-1/2 w-0.5 h-full bg-indigo-500 origin-top" style={{ scaleY }}/>
@@ -63,3 +78,4 @@ const NewsPage = () => {
 };
 
 export default NewsPage;
+

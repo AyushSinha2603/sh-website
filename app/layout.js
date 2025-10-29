@@ -1,4 +1,3 @@
-// app/layout.js
 "use client";
 
 import localFont from 'next/font/local';
@@ -10,7 +9,7 @@ import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import ContactModal from "./components/ContactModal.jsx";
 import GlobalParticleBackground from "./components/GlobalParticleBackground.jsx";
-import FixThreeInHeadings from "./components/FixThreeInHeadings.jsx";
+// import FixThreeInHeadings from "./components/FixThreeInHeadings.jsx"; // <-- REMOVED: This was causing the bug
 import RefreshHandler from "./components/RefreshHandler.jsx";
 import HOC from "./components/HOC";
 
@@ -34,7 +33,7 @@ export default function RootLayout({ children }) {
       <body className={`${rajdhani.className} ${sleepyHeadFont.variable} bg-[#0F0F0F] text-neutral-200 antialiased`}>
       <HOC>
         <RefreshHandler />
-        <FixThreeInHeadings />
+        {/* <FixThreeInHeadings /> */} {/* <-- REMOVED: This was causing the bug */}
         <GlobalParticleBackground />
         <div className="relative z-10">
           <Navbar onGetInTouchClick={() => setIsModalOpen(true)} />

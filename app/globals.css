@@ -120,9 +120,6 @@
     @apply bg-background text-foreground;
   }
 }
-/* app/globals.css */
-
-/* ... your existing @tailwind lines ... */
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sleepyhead), Arial, sans-serif !important;
@@ -131,3 +128,19 @@ h1, h2, h3, h4, h5, h6 {
 p, span, div, a, li {
   font-family: 'Rajdhani', sans-serif;
 }
+
+/* --- UPDATED BOLD-DIGIT CLASS --- */
+.bold-digit {
+  display: inline-block;
+  
+  /* * This is the safest fix. 
+   * We are using color and weight, which will not break your font.
+  */
+  color: #ffffff; /* A bright yellow to make it pop */
+  font-weight: 900; /* Use the heaviest font weight */
+
+  /* * ALL OTHER OPTIONS (transform, text-stroke) ARE REMOVED
+   * because they cause your specific font to fail to render.
+  */
+}
+
