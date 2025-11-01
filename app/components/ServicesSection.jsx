@@ -61,7 +61,7 @@ const ServicesSection = () => {
               initial="initial"
               whileInView="visible"
               whileHover="hover"
-              className="group rounded-xl border p-8 cursor-pointer overflow-hidden backdrop-blur-sm"
+              className="group rounded-xl border p-8 overflow-hidden backdrop-blur-sm"
             >
               <motion.div variants={iconContainerVariants} transition={{ duration: 0.3 }} className="mb-6 inline-block p-4 border rounded-xl">
                 <motion.div variants={iconVariants}>
