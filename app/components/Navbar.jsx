@@ -72,11 +72,34 @@ const Navbar = ({ onGetInTouchClick }) => {
                    {hoveredLink === link && ( <motion.div layoutId="underline" className="absolute bottom-[-6px] left-0 w-full h-0.5 bg-indigo-500" /> )}
                 </motion.li>
               ))}
+              
+              {/* --- "GET IN TOUCH" AS NAV LINK --- */}
+              <motion.li 
+                variants={linkVariants} 
+                onMouseEnter={() => setHoveredLink("Get in Touch")} 
+                className="relative text-base font-medium text-neutral-300 transition-colors hover:text-white"
+              >
+                <button onClick={onGetInTouchClick} className="focus:outline-none">
+                  <StyleDigits>Contact Us</StyleDigits>
+                </button>
+                {hoveredLink === "Get in Touch" && ( <motion.div layoutId="underline" className="absolute bottom-[-6px] left-0 w-full h-0.5 bg-indigo-500" /> )}
+              </motion.li>
             </ul>
+            
+            {/* --- "JOIN DISCORD" AS PRIMARY CTA --- */}
+            <motion.a
+              href="https://discord.gg/cH7hBFS2"
+              target="_blank"
+              rel="noopener noreferrer"
+              variants={linkVariants}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-500"
+            >
+              <StyleDigits>Join Discord</StyleDigits>
+            </motion.a>
 
-            <motion.button onClick={onGetInTouchClick} variants={linkVariants} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="rounded-lg bg-indigo-600 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-500">
-              <StyleDigits>Get in Touch</StyleDigits>
-            </motion.button>
+            {/* "Get in Touch" button removed from here */}
           </div>
 
           {/* --- MOBILE HAMBURGER ICON --- */}
@@ -101,7 +124,28 @@ const Navbar = ({ onGetInTouchClick }) => {
                <div className="flex justify-end mb-8"> <button onClick={toggleMobileMenu} className="text-3xl text-white"><FiX /></button> </div>
                <ul className="flex flex-col items-center gap-8 mt-16">
                   {navLinks.map((link) => ( <li key={link} className="text-2xl font-semibold text-neutral-300 hover:text-white"> <a href={`/${link.toLowerCase()}`} onClick={toggleMobileMenu}><StyleDigits>{link}</StyleDigits></a> </li> ))}
-                  <li className="w-full mt-4"> <button onClick={() => { onGetInTouchClick(); toggleMobileMenu(); }} className="w-full rounded-md bg-indigo-600 px-4 py-2 text-lg font-semibold text-white transition-colors hover:bg-indigo-500"> <StyleDigits>Get in Touch</StyleDigits> </button> </li>
+                  
+                  {/* --- "GET IN TOUCH" AS NAV LINK (MOBILE) --- */}
+                  <li className="text-2xl font-semibold text-neutral-300 hover:text-white">
+                    <button onClick={() => { onGetInTouchClick(); toggleMobileMenu(); }} className="focus:outline-none">
+                      <StyleDigits>Contact Us</StyleDigits>
+                    </button>
+                  </li>
+
+                  {/* --- "JOIN DISCORD" AS PRIMARY CTA (MOBILE) --- */}
+                  <li className="w-full mt-4"> 
+                    <a
+                      href="https://discord.gg/cH7hBFS2"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={toggleMobileMenu}
+                      className="block w-full rounded-md bg-indigo-600 px-4 py-2 text-lg font-semibold text-white transition-colors hover:bg-indigo-500 text-center"
+                    >
+                      <StyleDigits>Join Discord</StyleDigits>
+                    </a>
+                  </li>
+
+                  {/* "Get in Touch" button removed from here */}
                </ul>
             </motion.div>
         )}
