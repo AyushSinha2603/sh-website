@@ -7,7 +7,7 @@ _A dynamic, engaging, and performant official website for SleepyHeads Studios._
 
 ## 🚀 Project Overview
 
-This is the official website for **SleepyHeads Studios**, an indie game development team passionate about crafting unique and memorable gaming experiences. This platform serves as our digital home, showcasing our portfolio of games, sharing studio news, introducing our talented team, and providing a direct point of contact for our community and potential partners.
+This is the official website for **SleepyHeads Studios**, an indie game development team passionate about crafting unique and memorable gaming experiences.. This platform serves as our digital home, showcasing our portfolio of games, sharing studio news, introducing our talented team, and providing a direct point of contact for our community and potential partners.
 
 Built with modern web technologies, the website prioritizes performance, responsiveness, and an immersive user experience, reflecting the creative spirit of our games.
 
