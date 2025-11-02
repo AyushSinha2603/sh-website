@@ -2,12 +2,13 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { useState, useEffect } from "react"; // 1. Import useEffect
+// 1. useCallback is already imported, which is what we need
+import { useState, useEffect, useRef, useCallback } from "react"; 
 import {
   FiTwitter,
   FiLinkedin,
   FiGithub,
-  FiRefreshCw, // This is the icon we're adjusting
+  FiRefreshCw,
   FiX,
   FiChevronLeft,
   FiChevronRight,
@@ -20,7 +21,7 @@ const teamMembers = [
   { name: "Rahul Kumar Mahato", role: "Lead Developer", image: "/images/rahul_cover.webp", backImage: "/images/rahul_in.jpeg", bio: "Rahul is the architect of our digital worlds, turning complex ideas into seamless gameplay.", color: "#FACC15", socials: { linkedin: "https://www.linkedin.com/in/rahul-kumar-mahato-36938931a", github: "https://github.com/rahul-240505" } },
   { name: "Narayan Satapathy", role: "3D Artist & UI/UX", image: "/images/narayan_cover.webp", backImage: "/images/narayan_in.jpeg", bio: "Narayan brings our visuals to life, sculpting immersive 3D worlds and designing intuitive user interfaces.", color: "#6366F1", socials: { linkedin: "https://www.linkedin.com/in/narayan-satapathy-a242341b3", github: "https://github.com/Narayan69" } },
   { name: "Vivek Kumar", role: "2D Artist", image: "/images/vivek_in.jpeg", backImage: "/images/vivek_in.jpeg", bio: "Vivek is the master of pixels and palettes, creating stunning concept art and 2D assets that define our games' visual identity.", color: "#F43F5E", socials: { linkedin: "https://www.linkedin.com/in/vivek-kashyap-b24b59295", github: "https://github.com/vivekkashyap17" } },
-  { name: "Ayush Sinha", role: "Web Developer", image: "/images/ayush_cover.webp", backImage: "/images/ayush_in.jpeg", bio: "Ayush builds our online presence, ensuring our community has a fast, beautiful, and reliable place to connect with us.", color: "#10B981", socials: { linkedin: "https://www.linkedin.com/in/ayush-sinha-70046a319", github: "https://github.com/AyushSinha2603" } },
+  { name: "Ayush Sinha", role: "Web Developer", image: "/images/ayush_cover.webp", backImage: "/images/ayush_in.jpeg", bio: "Ayush builds our online presence, ensuring our community has a fast, beautiful, and reliable place to connect with us.", color: "#10B981", socials: { linkedin: "https.linkedin.com/in/ayush-sinha-70046a319", github: "https://github.com/AyushSinha2603" } },
 ];
 
 // --- Data for Gallery Section ---
@@ -37,20 +38,26 @@ const galleryCategories = [
       "/images/IMG_20240901_162738672_HDR.jpg",
       "/images/IMG_20240901_162936175_HDR.jpg",
       "/images/IMG_20240901_163501307_HDR.jpg",
-      "/images/IMG_20240903_210849097.jpg",      
+      "/images/IMG_20240903_210849097.jpg",
     ],
     date: "August 2024",
   },
   {
     id: 4,
     title: "IGDC'24",
-    coverImage: "/images/office-cover.jpg",
+    coverImage: "/images/ig_cover.jpg",
     images: [
-      "/images/office-1.jpg",
-      "/images/office-2.jpg",
-      "/images/office-3.jpg",
+      "/images/ig6.jpg",
+      "/images/ig1.jpg",
+      "/images/ig8.jpg",
+      "/images/ig2.jpg",
+      "/images/ig9.jpg",
+      "/images/ig3.jpg",
+      "/images/ig4.jpg",
+      "/images/ig5.jpg",
+      "/images/ig7.jpg"
     ],
-    date: "Ongoing",
+    date: "November 2024",
   },
 ];
 
@@ -59,23 +66,18 @@ const TeamMemberFlipCard = ({ member, variants }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
   
-  // 2. Add state to check if we are on a mobile device
   const [isMobile, setIsMobile] = useState(false);
 
-  // 3. Check window size only on the client-side
   useEffect(() => {
-    // This code will only run in the browser, not on the server
     setIsMobile(window.innerWidth < 1024);
-  }, []); // Empty array ensures this runs only once when component mounts
+  }, []);
 
   const handleClick = () => {
-    // 4. Use the new 'isMobile' state
     if (isMobile) {
       setIsFlipped(!isFlipped);
     }
   };
 
-  // 5. Use the 'isMobile' state here too, instead of checking window.innerWidth directly
   const shouldFlip = !isMobile ? isHovered : isFlipped;
 
   return (
@@ -246,14 +248,86 @@ const CategoryCard = ({ category, onClick, variants }) => {
 const GalleryModal = ({ category, onClose }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const nextImage = () => {
-    setCurrentIndex((prev) => (prev + 1) % category.images.length);
-  };
+  const touchStartRef = useRef(null);
+  const touchMoveRef = useRef(null);
+  const lastWheelTime = useRef(0);
+  const minSwipeDistance = 50;
 
-  const prevImage = () => {
+  const nextImage = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % category.images.length);
+  }, [category.images.length]);
+
+  const prevImage = useCallback(() => {
     setCurrentIndex(
       (prev) => (prev - 1 + category.images.length) % category.images.length
     );
+  }, [category.images.length]);
+
+  // Effect for keyboard (Arrows + Esc) and mouse wheel listeners
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowRight") {
+        nextImage();
+      } else if (e.key === "ArrowLeft") {
+        prevImage();
+      } else if (e.key === "Escape") { 
+        onClose(); 
+      }
+    };
+
+    const handleWheel = (e) => {
+      e.preventDefault();
+      const now = Date.now();
+      if (now - lastWheelTime.current < 300) {
+        return;
+      }
+      lastWheelTime.current = now;
+
+      if (e.deltaY > 0) {
+        nextImage();
+      } else if (e.deltaY < 0) {
+        prevImage();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    const modalElement = document.querySelector(".fixed.inset-0.z-50");
+    if (modalElement) {
+      modalElement.addEventListener("wheel", handleWheel, { passive: false });
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      if (modalElement) {
+        modalElement.removeEventListener("wheel", handleWheel);
+      }
+    };
+  }, [nextImage, prevImage, onClose]); // This dependency array is now stable
+
+  // Touch event handlers
+  const handleTouchStart = (e) => {
+    touchStartRef.current = e.touches[0].clientX;
+    touchMoveRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e) => {
+    touchMoveRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartRef.current || !touchMoveRef.current) {
+      return;
+    }
+    const deltaX = touchMoveRef.current - touchStartRef.current;
+
+    if (deltaX < -minSwipeDistance) {
+      nextImage();
+    } else if (deltaX > minSwipeDistance) {
+      prevImage();
+    }
+
+    touchStartRef.current = null;
+    touchMoveRef.current = null;
   };
 
   return (
@@ -293,6 +367,9 @@ const GalleryModal = ({ category, onClose }) => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -100 }}
             className="relative aspect-[16/10] md:aspect-[16/9] rounded-lg overflow-hidden"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             <Image
               src={category.images[currentIndex]}
@@ -302,8 +379,8 @@ const GalleryModal = ({ category, onClose }) => {
             />
           </motion.div>
 
-          {/* Navigation Arrows */}
-          {category.images.length > 1 && (
+          {/* Navigation Arrows (Hidden) */}
+          {category.images.length > 1 && false && (
             <>
               <button
                 onClick={prevImage}
@@ -358,6 +435,12 @@ const GalleryModal = ({ category, onClose }) => {
 const TeamAndGalleryPage = () => {
   // State for Gallery Modal
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  // --- FIX IS HERE ---
+  // 1. Define a stable onClose handler using useCallback
+  const handleCloseModal = useCallback(() => {
+    setSelectedCategory(null);
+  }, []); // An empty dependency array ensures this function is created only once
 
   // Variants for Team Section
   const teamContainerVariants = {
@@ -477,7 +560,7 @@ const TeamAndGalleryPage = () => {
         {selectedCategory && (
           <GalleryModal
             category={selectedCategory}
-            onClose={() => setSelectedCategory(null)}
+            onClose={handleCloseModal} // 2. Pass the stable function here
           />
         )}
       </AnimatePresence>
@@ -486,4 +569,3 @@ const TeamAndGalleryPage = () => {
 };
 
 export default TeamAndGalleryPage;
-
