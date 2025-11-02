@@ -30,6 +30,7 @@ const galleryCategories = [
     title: "HackInno'24",
     coverImage: "/images/IMG_20251101_172418_919.jpg",
     images: [
+      "/images/IMG_20251101_172418_919.jpg",
       "/images/IMG_20240901_133915078_HDR.jpg",
       "/images/IMG_20240901_151713568.jpg",
       "/images/IMG_20240901_162654650.jpg",
@@ -42,7 +43,7 @@ const galleryCategories = [
   },
   {
     id: 4,
-    title: "Office Fun",
+    title: "IGDC'24",
     coverImage: "/images/office-cover.jpg",
     images: [
       "/images/office-1.jpg",
