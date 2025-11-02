@@ -29,33 +29,35 @@ const galleryCategories = [
   {
     id: 1,
     title: "HackInno'24",
-    coverImage: "/images/IMG_20251101_172418_919.jpg",
+    coverImage: "/images/inno_cover.webp",
     images: [
-      "/images/IMG_20251101_172418_919.jpg",
-      "/images/IMG_20240901_133915078_HDR.jpg",
-      "/images/IMG_20240901_151713568.jpg",
-      "/images/IMG_20240901_162654650.jpg",
-      "/images/IMG_20240901_162738672_HDR.jpg",
-      "/images/IMG_20240901_162936175_HDR.jpg",
-      "/images/IMG_20240901_163501307_HDR.jpg",
-      "/images/IMG_20240903_210849097.jpg",
+      "/images/inno_cover.webp",
+      "/images/inno1.webp",
+      "/images/inno2.webp",
+      "/images/inno3.webp",
+      "/images/inno4.webp",
+      "/images/inno5.webp",
+      "/images/inno6.webp",
+      "/images/inno7.webp",
+
     ],
     date: "August 2024",
   },
   {
     id: 4,
     title: "IGDC'24",
-    coverImage: "/images/ig_cover.jpg",
+    coverImage: "/images/ig_cover.webp",
     images: [
-      "/images/ig6.jpg",
-      "/images/ig1.jpg",
-      "/images/ig8.jpg",
-      "/images/ig2.jpg",
-      "/images/ig9.jpg",
-      "/images/ig3.jpg",
-      "/images/ig4.jpg",
-      "/images/ig5.jpg",
-      "/images/ig7.jpg"
+      "/images/ig_cover.webp",
+      "/images/ig6.webp",
+      "/images/ig1.webp",
+      "/images/ig8.webp",
+      "/images/ig2.webp",
+      "/images/ig9.webp",
+      "/images/ig3.webp",
+      "/images/ig4.webp",
+      "/images/ig5.webp",
+      "/images/ig7.webp"
     ],
     date: "November 2024",
   },
@@ -541,7 +543,8 @@ const TeamAndGalleryPage = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+            // --- THIS IS THE ONLY CHANGED LINE ---
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 max-w-6xl mx-auto lg:max-w-3xl"
           >
             {galleryCategories.map((category) => (
               <CategoryCard
