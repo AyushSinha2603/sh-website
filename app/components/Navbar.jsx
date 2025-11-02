@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnD, AnimatePresence } from "framer-motion"; // D: Added AnimatePresence
+import { motion, AnimatePresence } from "framer-motion"; // D: Corrected AnimatePresence
 import { useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { usePathname } from "next/navigation";
@@ -13,28 +13,49 @@ const Navbar = ({ onGetInTouchClick }) => {
   const [hoveredLink, setHoveredLink] = useState(null);
   const [visible, setVisible] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // --- 1. ADDED MOBILE DETECTION STATE ---
+  const [isMobile, setIsMobile] = useState(false);
+  
   const pathname = usePathname();
   const isHomePage = pathname === '/';
 
   useEffect(() => {
-    if (isHomePage) {
+    // --- 2. ADDED DEVICE CHECK ---
+    // This checks screen size on load and on resize
+    const checkDevice = () => {
+      setIsMobile(window.innerWidth < 768); // 768px is 'md' breakpoint
+    };
+    
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
+    
+    // --- 3. MODIFIED VISIBILITY LOGIC ---
+    if (isHomePage && !isMobile) {
+      // --- DESKTOP HOMEPAGE ---
+      // Only run scroll logic if on desktop homepage
       const handleScroll = () => {
-        // Hero section is 4000px + 100vh tall
-        // About section reaches full opacity at 95% of hero scroll
-        // Calculate: (4000 + window.innerHeight) * 0.95
-        // D: Using the value from the code
         const heroSectionHeight = 1900 + window.innerHeight; 
         const aboutFullyVisibleAt = heroSectionHeight * 0.95;
-        
-        window.scrollY > aboutFullyVisibleAt ? setVisible(true) : setVisible(false);
+        setVisible(window.scrollY > aboutFullyVisibleAt);
       };
+      
       window.addEventListener("scroll", handleScroll);
-      handleScroll();
-      return () => window.removeEventListener("scroll", handleScroll);
+      handleScroll(); // Initial check
+      
+      return () => {
+        window.removeEventListener("resize", checkDevice);
+        window.removeEventListener("scroll", handleScroll);
+      };
+      
     } else {
+      // --- MOBILE (ANY PAGE) or DESKTOP (NOT HOME) ---
+      // Be visible immediately
       setVisible(true);
+      return () => window.removeEventListener("resize", checkDevice);
     }
-  }, [isHomePage, pathname]);
+    
+  }, [isHomePage, pathname, isMobile]); // Re-run logic if path or device type changes
 
   const navVariants = { visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeInOut", staggerChildren: 0.1 } }, hidden: { y: -100, opacity: 0, transition: { duration: 0.5, ease: "easeInOut" } }, };
   const linkVariants = { visible: { y: 0, opacity: 1 }, hidden: { y: -20, opacity: 0 }, };
@@ -46,6 +67,7 @@ const Navbar = ({ onGetInTouchClick }) => {
       <motion.nav
         variants={navVariants}
         initial="hidden"
+        // --- 4. ANIMATE PROP IS NOW CORRECT FOR ALL CASES ---
         animate={visible ? "visible" : "hidden"}
         className="fixed top-0 left-0 right-0 z-40 bg-black/40 backdrop-blur-lg"
       >
@@ -98,8 +120,6 @@ const Navbar = ({ onGetInTouchClick }) => {
             >
               <StyleDigits>Join Discord</StyleDigits>
             </motion.a>
-
-            {/* "Get in Touch" button removed from here */}
           </div>
 
           {/* --- MOBILE HAMBURGER ICON --- */}
@@ -117,7 +137,6 @@ const Navbar = ({ onGetInTouchClick }) => {
       </motion.nav>
 
       {/* --- MOBILE MENU PANEL --- */}
-      {/* D: Added AnimatePresence for exit animation */}
       <AnimatePresence> 
         {mobileMenuOpen && (
             <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.3, ease: "easeInOut" }} className="fixed top-0 right-0 z-30 h-screen w-64 bg-neutral-950 p-6 shadow-lg md:hidden">
@@ -144,8 +163,6 @@ const Navbar = ({ onGetInTouchClick }) => {
                       <StyleDigits>Join Discord</StyleDigits>
                     </a>
                   </li>
-
-                  {/* "Get in Touch" button removed from here */}
                </ul>
             </motion.div>
         )}
