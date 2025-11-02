@@ -110,7 +110,7 @@ const Navbar = ({ onGetInTouchClick }) => {
             
             {/* --- "JOIN DISCORD" AS PRIMARY CTA --- */}
             <motion.a
-              href="https://discord.gg/cH7hBFS2"
+              href="https://discord.gg/Qh8ZstsZBH"
               target="_blank"
               rel="noopener noreferrer"
               variants={linkVariants}
@@ -154,7 +154,7 @@ const Navbar = ({ onGetInTouchClick }) => {
                   {/* --- "JOIN DISCORD" AS PRIMARY CTA (MOBILE) --- */}
                   <li className="w-full mt-4"> 
                     <a
-                      href="https://discord.gg/cH7hBFS2"
+                      href="https://discord.gg/Qh8ZstsZBH"
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={toggleMobileMenu}
