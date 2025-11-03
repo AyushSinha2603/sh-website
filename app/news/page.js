@@ -74,7 +74,7 @@ const NewsPage = () => {
             <StyleDigits> Follow our journey and recent milestones. </StyleDigits>
           </motion.p>
         </div>
-        <div ref={timelineRef} className="relative max-w-3xl mx-auto flex flex-col items-center">
+        <div ref={timelineRef} className="relative max-w-3xl mx-auto flex flex-col items-center overflow-hidden">
           <motion.div className="absolute top-0 left-0 md:left-1/2 md:-translate-x-1/2 w-0.5 h-full bg-indigo-500 origin-top" style={{ scaleY }}/>
           <div className="w-full flex flex-col items-center">
             {newsData.map((item, index) => ( <NewsItem key={item.id} item={item} side={index % 2 === 0 ? 'left' : 'right'}/> ))}
