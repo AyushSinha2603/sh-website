@@ -61,9 +61,18 @@ const galleryCategories = [
     ],
     date: "November 2024",
   },
+  // --- 1. CHANGE ADDED HERE ---
+  {
+    id: 5,
+    title: "IGDC'25",
+    coverImage: "/images/igdc25_cover.webp", // Placeholder cover
+    images: [], // Empty array for "Coming Soon"
+    date: "Coming Soon",
+  },
+  // --- END OF CHANGE ---
 ];
 
-// --- Team Card Component ---
+// --- Team Card Component (Unchanged) ---
 const TeamMemberFlipCard = ({ member, variants }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
@@ -202,28 +211,41 @@ const TeamMemberFlipCard = ({ member, variants }) => {
   );
 };
 
-// --- Gallery Card Component ---
+// --- 2. CHANGE ADDED HERE: Gallery Card Component (Now "Smart") ---
 const CategoryCard = ({ category, onClick, variants }) => {
+  // Check if the card has images and should be interactive.
+  const isClickable = category.images && category.images.length > 0;
+
   return (
     <motion.div
       variants={variants}
-      className="relative group cursor-pointer overflow-hidden rounded-lg aspect-[4/3]"
-      onClick={onClick}
-      whileHover={{ scale: 1.03 }}
+      className={`relative group overflow-hidden rounded-lg aspect-[4/3] ${
+        // Change the cursor if it's not clickable.
+        isClickable ? "cursor-pointer" : "cursor-default"
+      }`}
+      // Only attach the onClick handler if it's clickable.
+      onClick={isClickable ? onClick : undefined}
+      // Only animate the hover if it's clickable.
+      whileHover={isClickable ? { scale: 1.03 } : {}}
       transition={{ duration: 0.3 }}
     >
       <Image
         src={category.coverImage}
         alt={category.title}
         fill
-        className="object-cover transition-transform duration-500 group-hover:scale-110"
+        className={`object-cover transition-transform duration-500 ${
+          // Add "disabled" visual effects: grayscale and no zoom.
+          isClickable ? "group-hover:scale-110" : "grayscale"
+        }`}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
 
-      {/* Folder Icon */}
-      <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-2">
-        <FiFolder className="w-5 h-5 text-white" />
-      </div>
+      {/* Only show the folder icon if it's clickable. */}
+      {isClickable && (
+        <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-2">
+          <FiFolder className="w-5 h-5 text-white" />
+        </div>
+      )}
 
       {/* Category Info */}
       <div className="absolute bottom-0 left-0 right-0 p-4">
@@ -231,23 +253,46 @@ const CategoryCard = ({ category, onClick, variants }) => {
           <StyleDigits>{category.title}</StyleDigits>
         </h3>
         <p className="text-sm text-gray-300">
-          <StyleDigits>{category.images.length} photos • {category.date}</StyleDigits>
+          {/* Clean up the text: "0 photos • Coming Soon" becomes just "Coming Soon". */}
+          {isClickable ? (
+            <StyleDigits>{category.images.length} photos • {category.date}</StyleDigits>
+          ) : (
+            <StyleDigits>{category.date}</StyleDigits>
+          )}
         </p>
       </div>
 
-      {/* Hover Overlay */}
-      <motion.div
-        className="absolute inset-0 bg-indigo-600/20"
-        initial={{ opacity: 0 }}
-        whileHover={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      />
+      {/* Only show the hover overlay if it's clickable. */}
+      {isClickable && (
+        <motion.div
+          className="absolute inset-0 bg-indigo-600/20"
+          initial={{ opacity: 0 }}
+          whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        />
+      )}
     </motion.div>
   );
 };
+// --- END OF CHANGE ---
 
-// --- Gallery Modal Component ---
+
+// --- 3. CHANGE ADDED HERE: Gallery Modal Component (Now "Crash-Proof") ---
 const GalleryModal = ({ category, onClose }) => {
+  // --- ADDED CRASH-PROOFING ---
+  // If category is invalid or has no images, call onClose and render nothing.
+  useEffect(() => {
+    if (!category || !category.images || category.images.length === 0) {
+      onClose();
+    }
+  }, [category, onClose]);
+
+  // If the category is invalid, don't render the modal contents to prevent errors.
+  if (!category || !category.images || category.images.length === 0) {
+    return null;
+  }
+  // --- END OF ADDED SECTION ---
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const touchStartRef = useRef(null);
@@ -255,6 +300,7 @@ const GalleryModal = ({ category, onClose }) => {
   const lastWheelTime = useRef(0);
   const minSwipeDistance = 50;
 
+  // These functions are now safe because the component returns null if images.length is 0
   const nextImage = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % category.images.length);
   }, [category.images.length]);
@@ -373,6 +419,7 @@ const GalleryModal = ({ category, onClose }) => {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
+            {/* This is now safe, as it won't be rendered if images is empty */}
             <Image
               src={category.images[currentIndex]}
               alt={`${category.title} ${currentIndex + 1}`}
@@ -432,8 +479,10 @@ const GalleryModal = ({ category, onClose }) => {
     </motion.div>
   );
 };
+// --- END OF CHANGE ---
 
-// --- Main Page Component (Combined) ---
+
+// --- Main Page Component (Unchanged) ---
 const TeamAndGalleryPage = () => {
   // State for Gallery Modal
   const [selectedCategory, setSelectedCategory] = useState(null);
