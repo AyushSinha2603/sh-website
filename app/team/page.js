@@ -47,7 +47,7 @@ const teamMembers = [
     role: "2D Artist", 
     image: "/images/vivek_cover.webp", 
     backImage: "/images/vivek_cover.webp", 
-    bio: "Vivek defines our visual style through bold concepts and detailed 2D artwork.", 
+    bio: "Vivek defines our visual style through bold concepts and detailed   2D artwork.", 
     color: "#EF4444", 
     socials: { 
       linkedin: "https://www.linkedin.com/in/vivek-kashyap-b24b59295", 
