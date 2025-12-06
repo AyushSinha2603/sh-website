@@ -18,11 +18,56 @@ import StyleDigits from "../components/StyleDigits.jsx"; // Import StyleDigits -
 
 // --- Data for Team Section ---
 const teamMembers = [
-  { name: "Rahul Kumar Mahato", role: "Lead Developer", image: "/images/rahul_cover.webp", backImage: "/images/rahul_cover.webp", bio: "Rahul is the architect of our digital worlds, turning complex ideas into seamless gameplay.", color: "#FACC15", socials: { linkedin: "https://www.linkedin.com/in/rahul-kumar-mahato-36938931a", github: "https://github.com/rahul-240505" } },
-  { name: "Narayan Satapathy", role: "3D Artist & UI/UX", image: "/images/narayan_cover.webp", backImage: "/images/narayan_cover.webp", bio: "Narayan brings our visuals to life, sculpting immersive 3D worlds and designing intuitive user interfaces.", color: "#6366F1", socials: { linkedin: "https://www.linkedin.com/in/narayan-satapathy-a242341b3", github: "https://github.com/Narayan69" } },
-  { name: "Vivek Kumar", role: "2D Artist", image: "/images/vivek_cover.webp", backImage: "/images/vivek_cover.webp", bio: "Vivek is the master of pixels and palettes, creating stunning concept art and 2D assets that define our games' visual identity.", color: "#F43F5E", socials: { linkedin: "https://www.linkedin.com/in/vivek-kashyap-b24b59295", github: "https://github.com/vivekkashyap17" } },
-  { name: "Ayush Sinha", role: "Game Programmer", image: "/images/ayush_cover.webp", backImage: "/images/ayush_cover.webp", bio: "Ayush builds our online presence, ensuring our community has a fast, beautiful, and reliable place to connect with us.", color: "#10B981", socials: { linkedin: "https.linkedin.com/in/ayush-sinha-70046a319", github: "https://github.com/AyushSinha2603" } },
+  { 
+    name: "Rahul Kumar Mahato", 
+    role: "Lead Developer", 
+    image: "/images/rahul_cover.webp", 
+    backImage: "/images/rahul_cover.webp", 
+    bio: "Rahul turns complex ideas into clean, playable systems that drive our games.", 
+    color: "#F59E0B", 
+    socials: { 
+      linkedin: "https://www.linkedin.com/in/rahul-kumar-mahato-36938931a", 
+      github: "https://github.com/rahul-240505" 
+    } 
+  },
+  { 
+    name: "Narayan Satapathy", 
+    role: "3D Artist & UI/UX", 
+    image: "/images/narayan_cover.webp", 
+    backImage: "/images/narayan_cover.webp", 
+    bio: "Narayan shapes the look and feel of our worlds with sharp 3D art and intuitive design.", 
+    color: "#6366F1", 
+    socials: { 
+      linkedin: "https://www.linkedin.com/in/narayan-satapathy-a242341b3", 
+      github: "https://github.com/Narayan69" 
+    } 
+  },
+  { 
+    name: "Vivek Kumar", 
+    role: "2D Artist", 
+    image: "/images/vivek_cover.webp", 
+    backImage: "/images/vivek_cover.webp", 
+    bio: "Vivek defines our visual style through bold concepts and detailed 2D artwork.", 
+    color: "#EF4444", 
+    socials: { 
+      linkedin: "https://www.linkedin.com/in/vivek-kashyap-b24b59295", 
+      github: "https://github.com/vivekkashyap17" 
+    } 
+  },
+  { 
+    name: "Ayush Sinha", 
+    role: "Game Programmer", 
+    image: "/images/ayush_cover.webp", 
+    backImage: "/images/ayush_cover.webp", 
+    bio: "Ayush engineers core gameplay systems and builds the tech that powers our online presence.", 
+    color: "#0EA5E9", 
+    socials: { 
+      linkedin: "https.linkedin.com/in/ayush-sinha-70046a319", 
+      github: "https://github.com/AyushSinha2603" 
+    } 
+  },
 ];
+
 
 // --- Data for Gallery Section ---
 const galleryCategories = [
