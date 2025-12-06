@@ -35,12 +35,12 @@ const teamMembers = [
     role: "3D Artist & UI/UX", 
     image: "/images/narayan_cover.webp", 
     backImage: "/images/narayan_cover.webp", 
-    bio: "Narayan shapes the look and feel of our worlds with sharp 3D art and intuitive design.", 
+    bio: "Narayan shapes the look and feel of our worlds with sharp 3D art and intuitive design. ", 
     color: "#6366F1", 
-    socials: { 
+    socials: {
       linkedin: "https://www.linkedin.com/in/narayan-satapathy-a242341b3", 
       github: "https://github.com/Narayan69" 
-    } 
+    }
   },
   { 
     name: "Vivek Kumar", 
