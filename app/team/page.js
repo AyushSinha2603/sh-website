@@ -56,7 +56,7 @@ const teamMembers = [
   },
   { 
     name: "Ayush Sinha", 
-    role: "Game Programmer", 
+    role: "Web & Game Developer", 
     image: "/images/ayush_cover.webp", 
     backImage: "/images/ayush_cover.webp", 
     bio: "Ayush engineers core gameplay systems and builds the tech that powers our online presence.", 
