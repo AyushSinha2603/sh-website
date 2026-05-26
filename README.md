@@ -60,13 +60,3 @@ Meet the talented individuals behind SleepyHeads Studios:
 
 ---
 
-## 🙏 Acknowledgments
-
-* [Next.js](https://nextjs.org/)
-* [Tailwind CSS](https://tailwindcss.com/)
-* [Framer Motion](https://www.framer.com/motion/)
-* [React Icons](https://react-icons.github.io/react-icons/)
-* [Vercel](https://vercel.com/) for hosting.
-* Our amazing community for their support!
-
----
