@@ -36,49 +36,6 @@ Built with modern web technologies, the website prioritizes performance, respons
 
 ---
 
-## 🌐 Live Demo
-
-Experience the website live:
-[https://sleepyheadstudios.vercel.app/](https://sleepyheadstudios.vercel.app/)
-
----
-
-## ⚡ Getting Started (For Developers)
-
-Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
-
-### Prerequisites
-
-Make sure you have Node.js and npm (or yarn/pnpm) installed.
-
-* Node.js (LTS version recommended)
-* npm (comes with Node.js)
-
-### Installation
-
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/AyushSinha2603/sh-website.com.git](https://github.com/AyushSinha2603/sh-website.com.git)
-    cd sh-website.com
-    ```
-    (Note: The `.com` in the repository name seems unusual for a non-domain, you might want to consider renaming your GitHub repo to just `sh-website` or similar if `sh-website.com` is not your actual domain. If it is your domain and this is a monorepo, that's fine.)
-
-2.  **Install dependencies:**
-    Due to potential peer dependency conflicts with newer React versions, use the `--legacy-peer-deps` flag if `npm install` fails.
-    ```bash
-    npm install --legacy-peer-deps
-    ```
-
-3.  **Run the development server:**
-    ```bash
-    npm run dev
-    ```
-
-4.  **Open in browser:**
-    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
----
-
 ## 🤝 Contributing
 
 We welcome contributions! If you have suggestions for improvements or find any issues, please feel free to:
@@ -100,12 +57,6 @@ Meet the talented individuals behind SleepyHeads Studios:
 * **Narayan Satapathy** - 3D Artist & UI/UX
 * **Vivek Kumar** - 2D Artist
 * **Ayush Sinha** - Web Developer
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details (if you have one).
 
 ---
 
