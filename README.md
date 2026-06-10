@@ -1,7 +1,7 @@
 # SleepyHeads Studios - Official Website
 
 ![Website Banner](./public/images/website-banner.png)
-_A dynamic, engaging, and performant official website for SleepyHeads Studios._
+_A dynamic, engaging, and performant official website for SleepyHead Studios._
 
 ---
 
