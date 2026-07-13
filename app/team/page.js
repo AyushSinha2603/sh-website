@@ -62,7 +62,7 @@ const teamMembers = [
     bio: "Ayush engineers core gameplay systems and builds the tech that powers our online presence.", 
     color: "#0EA5E9", 
     socials: { 
-      linkedin: "https.linkedin.com/in/ayush-sinha-70046a319", 
+      linkedin: "https://www.linkedin.com/in/ayush-sinha-70046a319", 
       github: "https://github.com/AyushSinha2603" 
     } 
   },
