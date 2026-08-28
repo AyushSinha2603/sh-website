@@ -65,11 +65,11 @@ const NewsPage = () => {
     <div className="bg-transparent min-h-screen pt-32 pb-24">
       <div className="container mx-auto px-6">
         <div className="text-center mb-20">
-          <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut" }} className="text-5xl md:text-7xl font-black text-white uppercase">
+          <motion.h1 initial={{ y: -20 }} animate={{ y: 0 }} transition={{ duration: 0.8, ease: "easeInOut" }} className="text-5xl md:text-7xl font-black text-white uppercase">
             {/* 2. Wrap heading text */}
             <StyleDigits> Latest Updates </StyleDigits>
           </motion.h1>
-          <motion.p initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }} className="text-lg text-neutral-400 mt-4">
+          <motion.p initial={{ y: -20 }} animate={{ y: 0 }} transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }} className="text-lg text-neutral-400 mt-4">
             {/* 2. Wrap paragraph text */}
             <StyleDigits> Follow our journey and recent milestones. </StyleDigits>
           </motion.p>

@@ -162,6 +162,7 @@ const TeamMemberFlipCard = ({ member, variants }) => {
               alt={member.name}
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-110"
+              priority={true}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
 
@@ -579,16 +580,16 @@ const TeamAndGalleryPage = () => {
         <div className="container mx-auto px-6">
           <div className="text-center mb-20">
             <motion.h1
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ y: -20 }}
+              animate={{ y: 0 }}
               transition={{ duration: 0.8, ease: "easeInOut" }}
               className="text-5xl md:text-7xl font-black text-white uppercase"
             >
               <StyleDigits>Meet the Team</StyleDigits>
             </motion.h1>
             <motion.p
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ y: -20 }}
+              animate={{ y: 0 }}
               transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }}
               className="text-lg text-neutral-400 mt-4"
             >

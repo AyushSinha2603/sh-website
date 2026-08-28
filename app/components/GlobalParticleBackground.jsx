@@ -112,9 +112,19 @@ const GlobalParticleBackground = () => {
         }, 150); // Debounce to prevent rapid calls
     };
 
-    let initialDelayTimeout = setTimeout(() => {
-        initParticles(); // Initial call after a delay
-    }, 1500); // 1.5 seconds delay allows main thread to hydrate everything else first
+    const startInit = () => {
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => initParticles(), { timeout: 2000 });
+        } else {
+            setTimeout(initParticles, 1500);
+        }
+    };
+
+    if (document.readyState === 'complete') {
+        startInit();
+    } else {
+        window.addEventListener('load', startInit);
+    }
     window.addEventListener('resize', initParticles); // Re-initialize on window resize
 
     // Observer to detect body size changes (e.g., content loading)
@@ -125,7 +135,7 @@ const GlobalParticleBackground = () => {
       console.log("Cleaning up GlobalParticleBackground...");
       resizeObserver.disconnect();
       clearTimeout(resizeTimeout);
-      clearTimeout(initialDelayTimeout);
+      window.removeEventListener('load', startInit);
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', initParticles);
       window.removeEventListener('mousemove', handleMouseMove);

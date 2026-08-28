@@ -76,7 +76,7 @@ const allGamesData = [
 
 
 // --- Game Card Component (Using the same style) ---
-const GameCard = ({ game, variants }) => {
+const GameCard = ({ game, variants, priority }) => {
   const isExternal = game.externalUrl && game.externalUrl !== "#";
   // Always use motion.a for this page as all links go to Itch.io
   const LinkComponent = motion.a;
@@ -102,6 +102,7 @@ const GameCard = ({ game, variants }) => {
             fill
             className="object-cover"
             unoptimized={game.hoverImage?.endsWith('.gif')} // Disable optimization for GIFs
+            priority={priority}
           />
           {/* Foreground Poster Image */}
           <Image
@@ -109,6 +110,7 @@ const GameCard = ({ game, variants }) => {
             alt={game.title}
             fill
             className="object-cover opacity-100 transition-opacity duration-500 group-hover:opacity-0"
+            priority={priority}
           />
           {/* Info Panel */}
           <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6 bg-gradient-to-t from-black/90 via-black/70 to-transparent translate-y-[70%] md:translate-y-[65%] transition-transform duration-500 group-hover:translate-y-0">
@@ -136,16 +138,16 @@ const GamesPage = () => {
         {/* Page Header */}
         <div className="text-center mb-16">
           <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ y: -20 }}
+            animate={{ y: 0 }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
             className="text-5xl md:text-7xl font-black text-white uppercase"
           >
             Our Worlds
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ y: -20 }}
+            animate={{ y: 0 }}
             transition={{ duration: 0.8, ease: "easeInOut", delay: 0.2 }}
             className="text-lg text-neutral-400 mt-4"
           >
@@ -160,8 +162,8 @@ const GamesPage = () => {
           animate="visible"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
-          {allGamesData.map((game) => (
-            <GameCard key={game.id} game={game} variants={itemVariants} />
+          {allGamesData.map((game, index) => (
+            <GameCard key={game.id} game={game} variants={itemVariants} priority={index < 4} />
           ))}
         </motion.div>
 
