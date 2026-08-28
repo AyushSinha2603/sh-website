@@ -1,13 +1,24 @@
 "use client"
 
 import { ReactLenis } from 'lenis/react'
+import { useState, useEffect } from 'react'
 
 function HOC({children}) {
+  // Default to true (mobile) during SSR so Lighthouse/mobile doesn't hydrate the heavy scroller initially
+  const [isMobile, setIsMobile] = useState(true);
 
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  if (isMobile) {
+    return <>{children}</>;
+  }
 
   return (
-    <>
-      {/* <ReactLenis root /> */}
      <ReactLenis
         root
         options={{
@@ -18,7 +29,6 @@ function HOC({children}) {
       >
         {children}
       </ReactLenis>
-    </>
   )
 }
 

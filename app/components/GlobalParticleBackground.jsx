@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 
 const GlobalParticleBackground = () => {
   const canvasRef = useRef(null);
@@ -143,6 +143,13 @@ const GlobalParticleBackground = () => {
     };
     return cleanupFunction;
   }, []); // Empty dependency array ensures this effect runs only once on mount and cleans up on unmount
+
+  const [isMobile, setIsMobile] = useState(true);
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
+  if (isMobile) return null;
 
   // Render the canvas element
   return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none" />;

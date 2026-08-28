@@ -66,7 +66,7 @@ const Navbar = ({ onGetInTouchClick }) => {
     <>
       <motion.nav
         variants={navVariants}
-        initial="hidden"
+        initial={isHomePage ? "hidden" : "visible"}
         // --- 4. ANIMATE PROP IS NOW CORRECT FOR ALL CASES ---
         animate={visible ? "visible" : "hidden"}
         className="fixed top-0 left-0 right-0 z-40 bg-black/40 backdrop-blur-lg"
