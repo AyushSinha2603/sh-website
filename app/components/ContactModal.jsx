@@ -3,38 +3,36 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { FiMail, FiX, FiArrowRight } from "react-icons/fi";
 import { useState, useRef } from "react";
-import emailjs from '@emailjs/browser';
 
 const ContactModal = ({ isOpen, setIsOpen }) => {
   const form = useRef();
   const [statusMessage, setStatusMessage] = useState("");
 
-  const sendEmail = (e) => {
+  const sendEmail = async (e) => {
     e.preventDefault();
     setStatusMessage("Sending...");
 
-    emailjs
-      .sendForm(
+    try {
+      const emailjs = (await import('@emailjs/browser')).default;
+      
+      const result = await emailjs.sendForm(
         process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
         process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
         form.current,
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
-      )
-      .then(
-        (result) => {
-          console.log("SUCCESS!", result.text);
-          setStatusMessage("Message sent successfully!");
-          e.target.reset();
-          setTimeout(() => {
-              setIsOpen(false);
-              setStatusMessage(""); // Reset status after closing
-          }, 2000);
-        },
-        (error) => {
-          console.log("FAILED...", error.text);
-          setStatusMessage("Failed to send message. Please try again.");
-        }
       );
+      
+      console.log("SUCCESS!", result.text);
+      setStatusMessage("Message sent successfully!");
+      e.target.reset();
+      setTimeout(() => {
+          setIsOpen(false);
+          setStatusMessage(""); // Reset status after closing
+      }, 2000);
+    } catch (error) {
+      console.log("FAILED...", error.text || error.message);
+      setStatusMessage("Failed to send message. Please try again.");
+    }
   };
 
   return (

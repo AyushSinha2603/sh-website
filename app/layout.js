@@ -4,6 +4,7 @@ import "./globals.css";
 import HeaderWithModal from "./components/HeaderWithModal.jsx";
 import Footer from "./components/Footer.jsx";
 import GlobalParticleBackground from "./components/GlobalParticleBackground.jsx";
+
 import RefreshHandler from "./components/RefreshHandler.jsx";
 import HOC from "./components/HOC";
 
@@ -29,7 +30,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
-        <link rel="preload" href="/images/website-banner.png" as="image" />
+        <link rel="preload" href="/images/website-banner.png" as="image" fetchPriority="high" />
       </head>
       <body className={`${rajdhani.className} ${sleepyHeadFont.variable} bg-[#0F0F0F] text-neutral-200 antialiased font-semibold`}>
       <HOC>

@@ -1,8 +1,10 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import Navbar from "./Navbar";
-import ContactModal from "./ContactModal";
+
+const ContactModal = dynamic(() => import('./ContactModal'), { ssr: false });
 
 export default function HeaderWithModal() {
   const [isModalOpen, setIsModalOpen] = useState(false);

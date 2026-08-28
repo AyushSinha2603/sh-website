@@ -112,18 +112,20 @@ const GlobalParticleBackground = () => {
         }, 150); // Debounce to prevent rapid calls
     };
 
-    initParticles(); // Initial call
+    let initialDelayTimeout = setTimeout(() => {
+        initParticles(); // Initial call after a delay
+    }, 1500); // 1.5 seconds delay allows main thread to hydrate everything else first
     window.addEventListener('resize', initParticles); // Re-initialize on window resize
 
     // Observer to detect body size changes (e.g., content loading)
     const resizeObserver = new ResizeObserver(initParticles);
     resizeObserver.observe(document.body);
 
-    // Cleanup function to remove listeners and stop animation when component unmounts
     const cleanupFunction = () => {
       console.log("Cleaning up GlobalParticleBackground...");
       resizeObserver.disconnect();
       clearTimeout(resizeTimeout);
+      clearTimeout(initialDelayTimeout);
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', initParticles);
       window.removeEventListener('mousemove', handleMouseMove);
