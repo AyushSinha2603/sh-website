@@ -29,8 +29,8 @@ const GlobalParticleBackground = () => {
     // --- Particle Logic ---
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
-      // Use scrollHeight to cover the full document height
-      canvas.height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight, window.innerHeight);
+      // Use viewport height since it's a fixed position canvas
+      canvas.height = window.innerHeight;
       console.log(`Canvas resized to: ${canvas.width}x${canvas.height}`); // Log resize
     };
 
@@ -42,9 +42,8 @@ const GlobalParticleBackground = () => {
       }
       update(mouse) {
         // Mouse interaction logic
-        if (mouse.x && mouse.y) {
-          const scrollY = window.scrollY; // Account for current scroll position
-          const dx = this.x - mouse.x; const dy = this.y - (mouse.y + scrollY);
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = this.x - mouse.x; const dy = this.y - mouse.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           if (distance < mouse.radius) {
             const force = (mouse.radius - distance) / mouse.radius;
@@ -55,7 +54,7 @@ const GlobalParticleBackground = () => {
         }
         // Basic movement
         this.x += this.vx; this.y += this.vy;
-        // Bounce off document edges
+        // Bounce off canvas edges (viewport)
         if (this.x - this.size < 0 || this.x + this.size > canvas.width) this.vx *= -1;
         if (this.y - this.size < 0 || this.y + this.size > canvas.height) this.vy *= -1;
       }
